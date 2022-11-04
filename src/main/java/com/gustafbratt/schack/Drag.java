@@ -5,13 +5,13 @@ public class Drag {
     final Brade kommande;
     final char pjas;
     final Position start;
-    final Position slut;
+    final Position till;
 
-    public Drag(Brade foregaende, char pjas, Position start, Position slut) {
+    public Drag(Brade foregaende, Position start, Position till) {
         this.foregaende = foregaende;
-        this.pjas = pjas;
+        this.pjas = foregaende.pjasPa(start);
         this.start = start;
-        this.slut = slut;
+        this.till = till;
         this.kommande = skapaKommande();
     }
 
@@ -22,7 +22,12 @@ public class Drag {
     private Brade skapaKommande() {
         Brade nya = foregaende.klona();
         nya.setPjas(start, '.');
-        nya.setPjas(slut, pjas);
+        nya.setPjas(till, pjas);
         return nya;
+    }
+
+    @Override
+    public String toString() {
+        return "" + pjas + start + "-" + till;
     }
 }
