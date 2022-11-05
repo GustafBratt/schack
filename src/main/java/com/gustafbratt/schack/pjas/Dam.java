@@ -3,6 +3,7 @@ package com.gustafbratt.schack.pjas;
 import com.gustafbratt.schack.Brade;
 import com.gustafbratt.schack.Drag;
 import com.gustafbratt.schack.Position;
+import com.gustafbratt.schack.Flytt;
 
 import java.util.List;
 
@@ -20,8 +21,9 @@ public class Dam extends Pjas {
 
     @Override
     public List<Drag> mojligaDrag() {
-        skapaDragLinjeFramat(position);
-        skapaDragLinjeBakat(position);
+        for(Flytt flytt : Flytt.ALLARIKTNINGAR) {
+            skapaDragLinje(flytt);
+        }
         return mojligaDrag;
     }
 

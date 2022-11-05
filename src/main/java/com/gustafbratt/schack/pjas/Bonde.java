@@ -5,7 +5,6 @@ import com.gustafbratt.schack.Drag;
 import com.gustafbratt.schack.Position;
 import com.gustafbratt.schack.UtanforBradetException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bonde extends Pjas {
@@ -21,7 +20,6 @@ public class Bonde extends Pjas {
 
     @Override
     public List<Drag> mojligaDrag() {
-        List<Drag> mojligaDrag = new ArrayList<>();
         try {
             if (brade.pjasPa(position.framfor()) == '.') {
                 Drag drag = new Drag(brade, position, position.framfor());

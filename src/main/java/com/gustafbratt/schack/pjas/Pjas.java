@@ -1,9 +1,6 @@
 package com.gustafbratt.schack.pjas;
 
-import com.gustafbratt.schack.Brade;
-import com.gustafbratt.schack.Drag;
-import com.gustafbratt.schack.Position;
-import com.gustafbratt.schack.UtanforBradetException;
+import com.gustafbratt.schack.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +23,35 @@ public abstract class Pjas {
         return pjas == '.' || Character.isLowerCase(pjas);
     }
 
-    void skapaDragLinjeFramat(Position pekare) {
+    void skapaDragLinjeFramat() {
+        Position pekare = position;
         try {
-            var positionTill = pekare.framfor();
-            skapaDragOmLedigEllerMotstandare(positionTill);
-            if (brade.pjasPa(positionTill) == '.') {
-                skapaDragLinjeFramat(positionTill);
-            }
+            do {
+                skapaDragOmLedigEllerMotstandare(pekare);
+                pekare = pekare.framfor();
+            } while (brade.pjasPa(pekare) == '.');
         } catch (UtanforBradetException ignored) {
         }
     }
 
-    void skapaDragLinjeBakat(Position pekare) {
+    void skapaDragLinjeBakat() {
+        Position pekare = position;
         try {
-            var positionTill = pekare.bakom();
-            skapaDragOmLedigEllerMotstandare(positionTill);
-            if (brade.pjasPa(positionTill) == '.') {
-                skapaDragLinjeBakat(positionTill);
-            }
+            do {
+                skapaDragOmLedigEllerMotstandare(pekare);
+                pekare = pekare.bakom();
+            } while (brade.pjasPa(pekare) == '.');
+        } catch (UtanforBradetException ignored) {
+        }
+    }
+
+    void skapaDragLinje(Flytt flytt) {
+        Position pekare = position;
+        try {
+            do {
+                pekare = flytt.flytta(pekare);
+                skapaDragOmLedigEllerMotstandare(pekare);
+            } while (brade.pjasPa(pekare) == '.');
         } catch (UtanforBradetException ignored) {
         }
     }
@@ -58,3 +66,4 @@ public abstract class Pjas {
 
 
 }
+

@@ -1,11 +1,7 @@
 package com.gustafbratt.schack.pjas;
 
-import com.gustafbratt.schack.Brade;
-import com.gustafbratt.schack.Drag;
-import com.gustafbratt.schack.Position;
-import com.gustafbratt.schack.UtanforBradetException;
+import com.gustafbratt.schack.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Kung extends Pjas {
@@ -21,34 +17,11 @@ public class Kung extends Pjas {
 
     @Override
     public List<Drag> mojligaDrag() {
-        // +
-        try {
-            skapaDragOmLedigEllerMotstandare(position.framfor());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.hoger());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.vanster());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.bakom());
-        } catch (UtanforBradetException ignored) { }
-        // x
-        try {
-            skapaDragOmLedigEllerMotstandare(position.framfor().hoger());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.hoger().bakom());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.vanster().framfor());
-        } catch (UtanforBradetException ignored) { }
-        try {
-            skapaDragOmLedigEllerMotstandare(position.bakom().vanster());
-        } catch (UtanforBradetException ignored) { }
-
+        for(Flytt flytt : Flytt.ALLARIKTNINGAR) {
+            try {
+                skapaDragOmLedigEllerMotstandare(flytt.flytta(position));
+            } catch (UtanforBradetException ignored) { }
+        }
         return mojligaDrag;
     }
-
 }
