@@ -8,9 +8,7 @@ import com.gustafbratt.schack.UtanforBradetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bonde implements PjasIf {
-    Brade brade;
-    Position position;
+public class Bonde extends Pjas {
 
     public Bonde(Brade brade, Position position) {
         char pjasKod = brade.pjasPa(position);

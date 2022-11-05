@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.gustafbratt.schack.pjas.PjasIf.CONST_KUNG;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.gustafbratt.schack.pjas.Pjas.CONST_KUNG;
 
 class KungTest {
 

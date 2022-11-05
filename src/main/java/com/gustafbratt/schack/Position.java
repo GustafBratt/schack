@@ -52,6 +52,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return "" + (char)(kolumnRaw + 'a') + radRaw;
+        return "" + (char)(kolumnRaw + 'a') + (radRaw + 1);
     }
 }
