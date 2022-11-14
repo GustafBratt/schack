@@ -1,4 +1,6 @@
-package com.gustafbratt.schack;
+package com.gustafbratt.schack.core;
+
+import com.gustafbratt.schack.core.pjas.Pjas;
 
 public class Drag {
     final Brade foregaende;
@@ -7,9 +9,10 @@ public class Drag {
     final Position start;
     final Position till;
 
+    //TODO: Verifiera att pjäsen får gå såhär?
     public Drag(Brade foregaende, Position start, Position till) {
         this.foregaende = foregaende;
-        this.pjas = foregaende.pjasPa(start);
+        this.pjas = foregaende.charPa(start);
         this.start = start;
         this.till = till;
         this.kommande = skapaKommande();
@@ -19,10 +22,14 @@ public class Drag {
         return kommande;
     }
 
+    public Position getTill() {
+        return till;
+    }
+
     private Brade skapaKommande() {
-        Brade nya = foregaende.klona();
-        nya.setPjas(start, '.');
-        nya.setPjas(till, pjas);
+        Brade nya = foregaende.klonaOchFlippa();
+        nya.setPjas(start.flippad(), '.');
+        nya.setPjas(till.flippad(), foregaende.bytSpelare(pjas));
         return nya;
     }
 

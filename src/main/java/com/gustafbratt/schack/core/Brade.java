@@ -1,7 +1,13 @@
-package com.gustafbratt.schack;
+package com.gustafbratt.schack.core;
+
+import com.gustafbratt.schack.core.pjas.Bonde;
+import com.gustafbratt.schack.core.pjas.Dam;
+import com.gustafbratt.schack.core.pjas.Kung;
+import com.gustafbratt.schack.core.pjas.Pjas;
 
 public class Brade {
     private final char[][] rutor = new char[8][8];
+    Farg aktuellFarg = Farg.VIT;
 
     public Brade(BRADE_INIT_TYP typ) {
         if (typ == BRADE_INIT_TYP.INGEN_INIT) {
@@ -29,34 +35,65 @@ public class Brade {
     }
 
     public void print() {
-        System.out.println("  a b c d e f g h");
+        if(aktuellFarg == Farg.VIT) {
+            System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag");
+            for (int i = 0; i < 8; i++) {
+                System.out.print(i + 1 + "|");
+                for (int j = 0; j < 8; j++) {
+                    System.out.print(rutor[i][j]);
+                    System.out.print(" ");
+                }
+                System.out.println();
+            }
+            System.out.println("  a b c d e f g h");
+            return;
+        }
+        System.out.println("  h g f e d c b a  " + aktuellFarg + "s drag");
         for (int i = 0; i < 8; i++) {
-            System.out.print(i + 1 + "|");
+            System.out.print(8 - i + "|");
             for (int j = 0; j < 8; j++) {
                 System.out.print(rutor[i][j]);
                 System.out.print(" ");
             }
             System.out.println();
         }
-        System.out.println("  a b c d e f g h");
+        System.out.println("  h g f e d c b a");
+
     }
 
-
-    public char pjasPa(Position position) {
-        return rutor[position.radRaw][position.kolumnRaw];
+    public char charPa(Position position) {
+        return rutor[position.getRad()][position.getKolumn()];
     }
 
-    public Brade klona() {
+    public Brade klonaOchFlippa() {
         Brade nya = new Brade(BRADE_INIT_TYP.INGEN_INIT);
         for (int i = 0; i < 8; i++) {
-            System.arraycopy(rutor[i], 0, nya.rutor[i], 0, 8);
+            for(int j = 0; j  < 8; j++) {
+                nya.rutor[i][j] = bytSpelare(rutor[7-i][7-j]);
+            }
         }
+        nya.aktuellFarg = aktuellFarg.andra();
         return nya;
     }
 
-    public void setPjas(Position position, char c) {
-        rutor[position.getRadRaw()][position.getKolumnRaw()] = c;
+    public char bytSpelare(char c) {
+        if(Character.isUpperCase(c))
+            return Character.toLowerCase(c);
+        return Character.toUpperCase(c);
     }
+
+    public void setPjas(Position position, char c) {
+        rutor[position.getRad()][position.getKolumn()] = c;
+    }
+
+    public Farg getAktuellFarg() {
+        return aktuellFarg;
+    }
+
+    public Position position(String s) throws UtanforBradetException {
+        return new Position(s, aktuellFarg);
+    }
+
     public enum BRADE_INIT_TYP {
         TOMT,
         START,
