@@ -1,5 +1,7 @@
 package com.gustafbratt.schack.core;
 
+import com.gustafbratt.schack.core.pjas.Pjas;
+
 public class Brade {
     private final char[][] rutor = new char[8][8];
     Farg aktuellFarg = Farg.VIT;
@@ -100,10 +102,10 @@ public class Brade {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 if(Character.isUpperCase(rutor[i][j])) {
-                    poangAktuell++;
+                    poangAktuell+=getVarde(rutor[i][j]);
                 }
                 if(Character.isLowerCase(rutor[i][j])) {
-                    poangInaktuell++;
+                    poangInaktuell+=getVarde(rutor[i][j]);
                 }
                 if(rutor[i][j] == 'K')
                     aktuellKungHittad = true;
@@ -125,6 +127,16 @@ public class Brade {
         if(!inaktuellKungHittad)
             return Integer.MIN_VALUE;
         return poangInaktuell - poangAktuell;
+    }
+
+    private int getVarde(char c) {
+        c = Character.toUpperCase(c);
+        return switch (c) {
+            case Pjas.CONST_BONDE -> 1;
+            case Pjas.CONST_KUNG -> 2;
+            case Pjas.CONST_DAM -> 9;
+            default -> 0;
+        };
     }
 
     public enum BRADE_INIT_TYP {
