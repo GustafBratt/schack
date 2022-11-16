@@ -39,7 +39,6 @@ public abstract class Pjas {
     }
 
     void skapaDragOmLedigEllerMotstandare(Position positionTill) {
-        System.out.println(positionTill);
         if (ledigEllerMotstandare(positionTill)) {
             Drag drag = new Drag(brade, this.position, positionTill);
             mojligaDrag.add(drag);

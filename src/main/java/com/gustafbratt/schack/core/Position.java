@@ -97,11 +97,12 @@ public class Position {
         return result;
     }
 
-
+    @Deprecated //Exponera inte raw.
     public int getRadRaw() {
         return radRaw;
     }
 
+    @Deprecated //Exponera inte raw.
     public int getKolumnRaw() {
         return kolumnRaw;
     }

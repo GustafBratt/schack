@@ -90,7 +90,10 @@ class KungTest {
         brade = d1.getKommande();
         brade.print();
         Kung kung = new Kung(brade, brade.position("e1"));
-        System.out.println(kung.getMojligaDrag());
+        List<Drag> mojligaDrag = kung.getMojligaDrag();
+        System.out.println(mojligaDrag);
+        assertThat(mojligaDrag).hasSize(5);
+        assertThat(mojligaDrag.stream().map(Drag::toString)).contains("Ke1-e2", "Ke1-f1", "Ke1-d1", "Ke1-f2", "Ke1-d2");
     }
 
 }
