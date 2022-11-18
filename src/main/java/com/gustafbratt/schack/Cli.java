@@ -1,6 +1,7 @@
 package com.gustafbratt.schack;
 
 import com.gustafbratt.schack.core.*;
+import com.gustafbratt.schack.core.minimax.MinMax;
 import com.gustafbratt.schack.core.pjas.Bonde;
 import com.gustafbratt.schack.core.pjas.Dam;
 import com.gustafbratt.schack.core.pjas.Kung;
@@ -10,19 +11,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Cli {
-/*
+
     Scanner scanner = new Scanner(System.in);
     Brade brade = new Brade(Brade.BRADE_INIT_TYP.BONDER_DAM_KUNG);
 
     public static void main(String[] args) throws UtanforBradetException {
         new Cli().start();
     }
+
     public void start() throws UtanforBradetException {
         System.out.println("Nu kör vi");
         Drag senasteDrag = null;
-        while(true){
-            if(brade.getAktuellFarg()==Farg.VIT) {
-                brade.print();
+        while (true) {
+            brade.print();
+
+            if (brade.getAktuellFarg() == Farg.VIT) {
                 Position start = valjPjas();
                 Pjas valdPjas = null;
                 switch (brade.charPa(start)) {
@@ -36,18 +39,15 @@ public class Cli {
                 List<Drag> giltigaDrag = valdPjas.getMojligaDrag();
                 System.out.println("Giltiga drag: " + giltigaDrag);
                 Position till = valjTill(giltigaDrag);
-                Drag d = new Drag(start, till);
+                Drag d = new Drag(brade, start, till);
                 brade = brade.utforDrag(d);
                 senasteDrag = d;
             } else {
-                brade.print();
                 System.out.println("startar minmax");
-                Drag beraknat = new MinMax().alphabeta(senasteDrag, 4, Integer.MAX_VALUE, Integer.MIN_VALUE, false);
-                System.out.println("minmax klar");
-                System.out.println("Det bästa draget för svart är " + beraknat);
-                Drag d = new Drag(beraknat.getStart(), beraknat.getTill());
-                brade = brade.utforDrag(d);
-                senasteDrag = d;
+                int startDjup = 5;
+                var beraknat = new MinMax(startDjup).minimax(brade, startDjup,  false).getDrag();
+                System.out.println("minmax klar: " + beraknat);
+                brade = brade.utforDrag(beraknat);
             }
         }
     }
@@ -61,8 +61,8 @@ public class Cli {
         while (true) {
             String prompt = inputPrompt("Välj mål");
             try {
-                var till = new Position(prompt, brade.getAktuellFarg());
-                if (giltigaDrag.stream().map(Drag::getTill).anyMatch(p -> p.equals(till))){
+                var till = new Position(prompt);
+                if (giltigaDrag.stream().map(Drag::getTill).anyMatch(p -> p.equals(till))) {
                     return till;
                 }
                 System.out.println("Inte ett giltigt drag.");
@@ -77,10 +77,10 @@ public class Cli {
         while (true) {
             String prompt = inputPrompt("Välj pjäs");
             try {
-                return new Position(prompt, brade.getAktuellFarg());
+                return new Position(prompt);
             } catch (UtanforBradetException e) {
                 System.out.println("Inte en giltig position: " + prompt);
             }
         }
-    }*/
+    }
 }

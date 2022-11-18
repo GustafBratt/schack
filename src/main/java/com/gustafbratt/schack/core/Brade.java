@@ -210,7 +210,6 @@ public class Brade {
         } else {
             rad--;
         }
-        System.out.println("Framfor " + position.asString() + " -> " + ""+kolumn + rad);
         return new Position(""+kolumn + rad);
     }
 
@@ -224,7 +223,6 @@ public class Brade {
             rad--;
             kolumn--;
         }
-        System.out.println("framforVanster " + position + " -> " + kolumn + rad);
         return new Position(""+kolumn + rad);
     }
 
