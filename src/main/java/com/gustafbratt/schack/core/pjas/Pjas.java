@@ -46,5 +46,14 @@ public abstract class Pjas {
     }
 
     public abstract char getChar();
+
+    @Override
+    public String toString() {
+        return "Pjas{" +
+                "aktuellFarg=" + brade.getAktuellFarg() +
+                ", position=" + position +
+                ", mojligaDrag=" + mojligaDrag +
+                '}';
+    }
 }
 

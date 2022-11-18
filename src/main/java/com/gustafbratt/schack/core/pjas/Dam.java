@@ -15,8 +15,6 @@ public class Dam extends Pjas {
         if (pjasKod != CONST_DAM) {
             throw new IllegalStateException("Inte en dam på position " + position + ". Det är en " + pjasKod);
         }
-        //this.brade = brade;
-        //this.position = position;
         beraknaMojligaDrag();
     }
 

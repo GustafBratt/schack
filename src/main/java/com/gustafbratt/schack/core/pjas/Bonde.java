@@ -1,9 +1,6 @@
 package com.gustafbratt.schack.core.pjas;
 
-import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
-import com.gustafbratt.schack.core.Position;
-import com.gustafbratt.schack.core.UtanforBradetException;
+import com.gustafbratt.schack.core.*;
 
 import java.util.List;
 
@@ -15,8 +12,6 @@ public class Bonde extends Pjas {
         if (pjasKod != CONST_BONDE) {
             throw new IllegalStateException("Inte en bonde på position " + position + ". Det är en " + pjasKod);
         }
-        //this.brade = brade;
-        //this.position = position;
         this.beraknaMojligaDrag();
     }
 
@@ -32,31 +27,31 @@ public class Bonde extends Pjas {
 
     private void beraknaMojligaDrag() {
         try {
-            if (brade.charPa(position.framfor()) == '.') {
-                Drag drag = new Drag(brade, position, position.framfor());
+            if (brade.charPa(brade.framfor(position)) == '.') {
+                Drag drag = new Drag(brade, position, brade.framfor(position));
                 mojligaDrag.add(drag);
             }
         } catch (UtanforBradetException ignored) {
         }
-        if (position.getRad() == 6) {
+        if ((brade.getAktuellFarg() == Farg.SVART && position.getRad() == 2) || (brade.getAktuellFarg() == Farg.VIT && position.getRad() == 7))  {
             try {
-                if (brade.charPa(position.framfor()) == '.' && brade.charPa(position.framfor().framfor()) == '.') {
-                    Drag drag = new Drag(brade, position, position.framfor().framfor());
+                if (brade.charPa(brade.framfor(position)) == '.' && brade.charPa(brade.framfor(brade.framfor(position))) == '.') {
+                    Drag drag = new Drag(brade, position, brade.framfor(brade.framfor(position)));
                     mojligaDrag.add(drag);
                 }
             } catch (UtanforBradetException ignored) {
             }
         }
         try {
-            if (Character.isLowerCase(brade.charPa(position.framfor().vanster()))) {
-                Drag drag = new Drag(brade, position, position.framfor().vanster());
+            if (Character.isLowerCase(brade.charPa(brade.framforVanster(position)))) {
+                Drag drag = new Drag(brade, position, brade.framforVanster(position));
                 mojligaDrag.add(drag);
             }
         } catch (UtanforBradetException ignored) {
         }
         try {
-            if (Character.isLowerCase(brade.charPa(position.framfor().hoger()))) {
-                Drag drag = new Drag(brade, position, position.framfor().hoger());
+            if (Character.isLowerCase(brade.charPa(brade.framforHoger(position)))) {
+                Drag drag = new Drag(brade, position, brade.framforHoger(position));
                 mojligaDrag.add(drag);
             }
         } catch (UtanforBradetException ignored) {

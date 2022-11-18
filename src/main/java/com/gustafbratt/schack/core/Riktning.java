@@ -7,17 +7,17 @@ public interface Riktning {
     Position flytta(Position pos) throws UtanforBradetException;
 
     // +
-    Riktning ETT = pos -> new Position(pos.getRadRaw() - 1, pos.getKolumnRaw(), pos.getFarg());
-    Riktning TVA = pos -> new Position(pos.getRadRaw() + 1, pos.getKolumnRaw(), pos.getFarg());
-    Riktning TRE = pos -> new Position(pos.getRadRaw(), pos.getKolumnRaw() + 1, pos.getFarg());
-    Riktning FYRA = pos -> new Position(pos.getRadRaw(), pos.getKolumnRaw() - 1, pos.getFarg());
+    Riktning ETT = pos -> new Position((char) (pos.getKolumn() + 1), pos.getRad());
+    Riktning TVA = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad());
+    Riktning TRE = pos -> new Position(pos.getKolumn(), pos.getRad() + 1);
+    Riktning FYRA = pos -> new Position(pos.getKolumn(), pos.getRad() - 1);
 
 
     // x
-    Riktning FEM = pos -> new Position(pos.getRadRaw() - 1, pos.getKolumnRaw() + 1, pos.getFarg());
-    Riktning SEX = pos -> new Position(pos.getRadRaw() + 1, pos.getKolumnRaw() + 1, pos.getFarg());
-    Riktning SJU = pos -> new Position(pos.getRadRaw() - 1, pos.getKolumnRaw() - 1, pos.getFarg());
-    Riktning OTTA = pos -> new Position(pos.getRadRaw() + 1, pos.getKolumnRaw() - 1, pos.getFarg());
+    Riktning FEM = pos -> new Position((char) (pos.getKolumn() + 1), pos.getRad() + 1);
+    Riktning SEX = pos -> new Position((char) (pos.getKolumn() + 1), pos.getRad() - 1);
+    Riktning SJU = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() + 1);
+    Riktning OTTA = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() - 1);
 
     List<Riktning> ALLARIKTNINGAR = List.of(
             ETT,

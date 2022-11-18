@@ -3,39 +3,30 @@ package com.gustafbratt.schack.core;
 import static com.gustafbratt.schack.core.Farg.VIT;
 
 public class Position {
-    private int radRaw;
-    private int kolumnRaw;
-    private final Farg farg;
+    String position;
 
-    public Position(int radRaw, int kolumnRaw, Farg farg) throws UtanforBradetException {
-        validera(radRaw, kolumnRaw);
-        this.radRaw = radRaw;
-        this.kolumnRaw = kolumnRaw;
-        this.farg = farg;
-    }
-
-    public Position(String position, Farg farg) throws UtanforBradetException {
+    public Position(String position) throws UtanforBradetException {
         if (position.length() != 2) {
             throw new UtanforBradetException("Inte en giltig position: " + position);
         }
-        kolumnRaw = position.charAt(0) - 'a';
-        radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
+        int kolumnRaw = position.charAt(0) - 'a';
+        int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
         validera(radRaw, kolumnRaw);
-        this.farg = farg;
+        this.position = position;
     }
 
-    Farg getFarg() {
-        return farg;
+    public Position(char kolumn, int rad) throws UtanforBradetException {
+        this(""+ kolumn + rad);
     }
 
-    public Position flippad() {
-        try {
-            return new Position(7 - radRaw, 7 - kolumnRaw, farg);
-        } catch (UtanforBradetException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public char getKolumn() {
+        return position.charAt(0);
     }
+
+    public int getRad() {
+        return Integer.parseInt(position.charAt(1) + "");
+    }
+
 
 
     private void validera(int radRaw, int kolumnRaw) throws UtanforBradetException {
@@ -44,39 +35,9 @@ public class Position {
         }
     }
 
-    public int getRad() {
-        if(farg == VIT)
-            return radRaw;
-        return 7 - radRaw;
-    }
-
-    public int getKolumn() {
-        if(farg == VIT)
-            return kolumnRaw;
-        return 7 - kolumnRaw;
-    }
-
-    public Position framfor() throws UtanforBradetException {
-        if(farg == VIT)
-            return new Position(radRaw - 1, kolumnRaw, farg);
-        return new Position(radRaw + 1, kolumnRaw, farg);
-    }
-
-    public Position vanster() throws UtanforBradetException {
-        if(farg == VIT)
-            return new Position(radRaw, kolumnRaw - 1, farg);
-        return new Position(radRaw, kolumnRaw + 1, farg);
-    }
-
-    public Position hoger() throws UtanforBradetException {
-        if(farg == VIT)
-            return new Position(radRaw, kolumnRaw + 1, farg);
-        return new Position(radRaw, kolumnRaw - 1, farg);
-    }
-
     @Override
     public String toString() {
-        return "" + (char)(kolumnRaw + 'a') + (radRaw + 1);
+        return "" + position;
     }
 
     @Override
@@ -84,27 +45,17 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Position position = (Position) o;
+        Position position1 = (Position) o;
 
-        if (radRaw != position.radRaw) return false;
-        return kolumnRaw == position.kolumnRaw;
+        return position.equals(position1.position);
     }
 
     @Override
     public int hashCode() {
-        int result = radRaw;
-        result = 31 * result + kolumnRaw;
-        return result;
+        return position.hashCode();
     }
 
-    @Deprecated //Exponera inte raw.
-    public int getRadRaw() {
-        return radRaw;
+    public String asString() {
+        return position;
     }
-
-    @Deprecated //Exponera inte raw.
-    public int getKolumnRaw() {
-        return kolumnRaw;
-    }
-
 }

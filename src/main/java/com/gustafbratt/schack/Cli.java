@@ -10,33 +10,45 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Cli {
-
+/*
     Scanner scanner = new Scanner(System.in);
-    Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+    Brade brade = new Brade(Brade.BRADE_INIT_TYP.BONDER_DAM_KUNG);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UtanforBradetException {
         new Cli().start();
     }
-    public void start() {
+    public void start() throws UtanforBradetException {
         System.out.println("Nu kör vi");
+        Drag senasteDrag = null;
         while(true){
-            brade.print();
-
-            Position start = valjPjas();
-            Pjas valdPjas = null;
-            switch (brade.charPa(start)) {
-                case Pjas.CONST_BONDE -> valdPjas = new Bonde(brade, start);
-                case Pjas.CONST_DAM -> valdPjas = new Dam(brade, start);
-                case Pjas.CONST_KUNG -> valdPjas = new Kung(brade, start);
-                default -> System.out.println("Ingen vettig pjäs på " + start);
+            if(brade.getAktuellFarg()==Farg.VIT) {
+                brade.print();
+                Position start = valjPjas();
+                Pjas valdPjas = null;
+                switch (brade.charPa(start)) {
+                    case Pjas.CONST_BONDE -> valdPjas = new Bonde(brade, start);
+                    case Pjas.CONST_DAM -> valdPjas = new Dam(brade, start);
+                    case Pjas.CONST_KUNG -> valdPjas = new Kung(brade, start);
+                    default -> System.out.println("Ingen vettig pjäs på " + start);
+                }
+                if (valdPjas == null)
+                    continue;
+                List<Drag> giltigaDrag = valdPjas.getMojligaDrag();
+                System.out.println("Giltiga drag: " + giltigaDrag);
+                Position till = valjTill(giltigaDrag);
+                Drag d = new Drag(start, till);
+                brade = brade.utforDrag(d);
+                senasteDrag = d;
+            } else {
+                brade.print();
+                System.out.println("startar minmax");
+                Drag beraknat = new MinMax().alphabeta(senasteDrag, 4, Integer.MAX_VALUE, Integer.MIN_VALUE, false);
+                System.out.println("minmax klar");
+                System.out.println("Det bästa draget för svart är " + beraknat);
+                Drag d = new Drag(beraknat.getStart(), beraknat.getTill());
+                brade = brade.utforDrag(d);
+                senasteDrag = d;
             }
-            if(valdPjas == null)
-                continue;
-            List<Drag> giltigaDrag = valdPjas.getMojligaDrag();
-            System.out.println("Giltiga drag: " + giltigaDrag);
-            Position till = valjTill(giltigaDrag);
-            Drag d = new Drag(brade, start, till);
-            brade = d.getKommande();
         }
     }
 
@@ -70,5 +82,5 @@ public class Cli {
                 System.out.println("Inte en giltig position: " + prompt);
             }
         }
-    }
+    }*/
 }
