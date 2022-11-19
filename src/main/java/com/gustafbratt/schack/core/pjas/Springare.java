@@ -1,30 +1,31 @@
 package com.gustafbratt.schack.core.pjas;
 
-import com.gustafbratt.schack.core.*;
+import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.Position;
+import com.gustafbratt.schack.core.Riktning;
+import com.gustafbratt.schack.core.UtanforBradetException;
 
-import java.util.List;
-
-public class Kung extends Pjas {
-
-    public Kung(Brade brade, Position position) {
+public class Springare extends Pjas {
+    public Springare(Brade brade, Position position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
-        if (pjasKod != CONST_KUNG) {
+        if (pjasKod != CONST_SPRINGARE) {
             throw new IllegalStateException("Inte en kung på position " + position + ". Det är en " + pjasKod);
         }
         this.beraknaMojligaDrag();
     }
 
     private void beraknaMojligaDrag() {
-        for(Riktning riktning : Riktning.ALLARIKTNINGAR) {
+        for (Riktning riktning : Riktning.SPRINGARE) {
             try {
                 skapaDragOmLedigEllerMotstandare(riktning.flytta(position));
-            } catch (UtanforBradetException ignored) { }
+            } catch (UtanforBradetException ignored) {
+            }
         }
     }
 
     @Override
     public char getChar() {
-        return CONST_KUNG;
+        return CONST_SPRINGARE;
     }
 }

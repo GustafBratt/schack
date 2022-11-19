@@ -7,27 +7,24 @@ import com.gustafbratt.schack.core.Riktning;
 
 import java.util.List;
 
-public class Dam extends Pjas {
-
-    public Dam(Brade brade, Position position) {
+public class Torn extends Pjas {
+    public Torn(Brade brade, Position position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
-        if (pjasKod != CONST_DAM) {
-            throw new IllegalStateException("Inte en dam på position " + position + ". Det är en " + pjasKod);
+        if (pjasKod != CONST_TORN) {
+            throw new IllegalStateException("Inte en kung på position " + position + ". Det är en " + pjasKod);
         }
-        beraknaMojligaDrag();
+        this.beraknaMojligaDrag();
     }
 
     private void beraknaMojligaDrag() {
-        for(Riktning riktning : Riktning.ALLARIKTNINGAR) {
+        for(Riktning riktning : Riktning.RAKA) {
             skapaLinjeMedDrag(riktning);
         }
     }
 
     @Override
     public char getChar() {
-        return CONST_DAM;
+        return CONST_TORN;
     }
-
-
 }

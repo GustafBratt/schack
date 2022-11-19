@@ -16,11 +16,6 @@ public class Bonde extends Pjas {
     }
 
     @Override
-    public List<Drag> getMojligaDrag() {
-        return mojligaDrag;
-    }
-
-    @Override
     public char getChar() {
         return CONST_BONDE;
     }

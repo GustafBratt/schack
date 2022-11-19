@@ -1,4 +1,4 @@
-package com.gustafbratt.schack.pjas;
+package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Drag;

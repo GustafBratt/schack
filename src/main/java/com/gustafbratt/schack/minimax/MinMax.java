@@ -1,4 +1,4 @@
-package com.gustafbratt.schack.core.minimax;
+package com.gustafbratt.schack.minimax;
 
 import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Drag;
@@ -15,8 +15,11 @@ public class MinMax {
     }
 
     public DragPoang minimax(Brade node, int depth, boolean maximizingPlayer) throws UtanforBradetException {
-        if (depth == 0 || node.poang() == Integer.MIN_VALUE || node.poang() == Integer.MAX_VALUE) {
+        if (depth == 0){
             return new DragPoang(null, node.poang());
+        }
+        if(node.poang() > 5_000 || node.poang() < -5_000) { // Svart vill ha litet. djupt ner har låg depth
+            return new DragPoang(null, node.poang()+depth); //TODO if maximzingPlayer?
         }
         List<Drag> allaMojligaDrag = node.allaMojligaDrag();
         Collections.shuffle(allaMojligaDrag);

@@ -1,11 +1,8 @@
 package com.gustafbratt.schack;
 
 import com.gustafbratt.schack.core.*;
-import com.gustafbratt.schack.core.minimax.MinMax;
-import com.gustafbratt.schack.core.pjas.Bonde;
-import com.gustafbratt.schack.core.pjas.Dam;
-import com.gustafbratt.schack.core.pjas.Kung;
 import com.gustafbratt.schack.core.pjas.Pjas;
+import com.gustafbratt.schack.minimax.MinMax;
 
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +10,7 @@ import java.util.Scanner;
 public class Cli {
 
     Scanner scanner = new Scanner(System.in);
-    Brade brade = new Brade(Brade.BRADE_INIT_TYP.BONDER_DAM_KUNG);
+    Brade brade = new Brade(Brade.BRADE_INIT_TYP.TORN_MOT_KUNG);
 
     public static void main(String[] args) throws UtanforBradetException {
         new Cli().start();
@@ -21,32 +18,36 @@ public class Cli {
 
     public void start() throws UtanforBradetException {
         System.out.println("Nu kör vi");
-        Drag senasteDrag = null;
         while (true) {
+            if (brade.poang() > 5_000) {
+                System.out.println("Vit vinner. Tack för en god martch.");
+                System.exit(0);
+            }
+            if (brade.poang() < -5_000) {
+                System.out.println("Svart vinner. Tack för en god martch.");
+                System.exit(0);
+            }
             brade.print();
-
             if (brade.getAktuellFarg() == Farg.VIT) {
                 Position start = valjPjas();
                 Pjas valdPjas = null;
-                switch (brade.charPa(start)) {
-                    case Pjas.CONST_BONDE -> valdPjas = new Bonde(brade, start);
-                    case Pjas.CONST_DAM -> valdPjas = new Dam(brade, start);
-                    case Pjas.CONST_KUNG -> valdPjas = new Kung(brade, start);
-                    default -> System.out.println("Ingen vettig pjäs på " + start);
-                }
-                if (valdPjas == null)
+
+                brade.getPjas(start);
+                if (brade.getPjas(start).isEmpty())
                     continue;
+                valdPjas = brade.getPjas(start).get();
                 List<Drag> giltigaDrag = valdPjas.getMojligaDrag();
                 System.out.println("Giltiga drag: " + giltigaDrag);
                 Position till = valjTill(giltigaDrag);
                 Drag d = new Drag(brade, start, till);
                 brade = brade.utforDrag(d);
-                senasteDrag = d;
             } else {
                 System.out.println("startar minmax");
                 int startDjup = 5;
-                var beraknat = new MinMax(startDjup).minimax(brade, startDjup,  false).getDrag();
+                var resultat = new MinMax(startDjup).minimax(brade, startDjup, false);
+                var beraknat = resultat.getDrag();
                 System.out.println("minmax klar: " + beraknat);
+                System.out.println("Möjlig poäng: " + resultat.getPoang());
                 brade = brade.utforDrag(beraknat);
             }
         }

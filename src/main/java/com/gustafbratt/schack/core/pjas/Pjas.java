@@ -9,6 +9,8 @@ public abstract class Pjas {
     public static final char CONST_BONDE = 'B';
     public static final char CONST_KUNG = 'K';
     public static final char CONST_DAM = 'D';
+    public static final char CONST_TORN = 'T';
+    public static final char CONST_SPRINGARE = 'S';
 
     final Brade brade;
     final Position position;
@@ -19,8 +21,6 @@ public abstract class Pjas {
         this.brade = brade;
         this.position = position;
     }
-
-    public abstract List<Drag> getMojligaDrag();
 
     boolean ledigEllerMotstandare(Position position) {
         char pjas = brade.charPa(position);
@@ -44,6 +44,11 @@ public abstract class Pjas {
             mojligaDrag.add(drag);
         }
     }
+
+    final public List<Drag> getMojligaDrag() {
+        return mojligaDrag;
+    }
+
 
     public abstract char getChar();
 

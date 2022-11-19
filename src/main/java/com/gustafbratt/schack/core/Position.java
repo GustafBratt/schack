@@ -1,7 +1,5 @@
 package com.gustafbratt.schack.core;
 
-import static com.gustafbratt.schack.core.Farg.VIT;
-
 public class Position {
     String position;
 

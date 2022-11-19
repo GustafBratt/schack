@@ -75,8 +75,27 @@ public class BradeTest {
         assertThat(b.poang()).isEqualTo(-9);
         b = b.klonaOchFlippa();
         assertThat(b.poang()).isEqualTo(-9);
-
     }
+
+    @Test
+    public void poang2() throws UtanforBradetException {
+        Brade b = new Brade(TOMT);
+        b.setPjas(new Position("d4"), 'k'); //VITs drag. svart kung. INT_MIN
+        b.setPjas(new Position("d3"), 'b');
+        b.setPjas(new Position("d2"), 'B');
+        b.print();
+        assertThat(b.poang()).isEqualTo(Integer.MIN_VALUE);
+    }
+    @Test
+    public void poang3() throws UtanforBradetException {
+        Brade b = new Brade(TOMT);
+        b.setPjas(new Position("d4"), 'K'); //SVARTs drag. svart kung. INT_MAX
+        b.setPjas(new Position("d3"), 'b');
+        b.setPjas(new Position("d2"), 'B');
+        b.print();
+        assertThat(b.poang()).isEqualTo(Integer.MAX_VALUE);
+    }
+
 
     @Test
     public void allaMojligaDrag() throws UtanforBradetException {

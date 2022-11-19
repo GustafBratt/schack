@@ -5,7 +5,6 @@ public class Drag {
     final Position start;
     final Position till;
 
-    //TODO: Verifiera att pjäsen får gå såhär?
     public Drag(Brade brade, Position start, Position till) {
         this.pjas = brade.charPa(start);
         this.start = start;

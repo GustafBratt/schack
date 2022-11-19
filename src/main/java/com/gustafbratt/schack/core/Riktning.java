@@ -19,6 +19,18 @@ public interface Riktning {
     Riktning SJU = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() + 1);
     Riktning OTTA = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() - 1);
 
+    //snel hest
+    Riktning SPRINGARE1 = pos -> new Position((char) (pos.getKolumn() + 1), pos.getRad() + 2);
+    Riktning SPRINGARE2 = pos -> new Position((char) (pos.getKolumn() + 1), pos.getRad() - 2);
+    Riktning SPRINGARE3 = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() + 2);
+    Riktning SPRINGARE4 = pos -> new Position((char) (pos.getKolumn() - 1), pos.getRad() - 2);
+
+    Riktning SPRINGARE5 = pos -> new Position((char) (pos.getKolumn() + 2), pos.getRad() + 1);
+    Riktning SPRINGARE6 = pos -> new Position((char) (pos.getKolumn() + 2), pos.getRad() - 1);
+    Riktning SPRINGARE7 = pos -> new Position((char) (pos.getKolumn() - 2), pos.getRad() + 1);
+    Riktning SPRINGARE8 = pos -> new Position((char) (pos.getKolumn() - 2), pos.getRad() - 1);
+
+
     List<Riktning> ALLARIKTNINGAR = List.of(
             ETT,
             TVA,
@@ -42,5 +54,16 @@ public interface Riktning {
             SEX,
             SJU,
             OTTA
+    );
+
+    List<Riktning> SPRINGARE  = List.of(
+            SPRINGARE1,
+            SPRINGARE2,
+            SPRINGARE3,
+            SPRINGARE4,
+            SPRINGARE5,
+            SPRINGARE6,
+            SPRINGARE7,
+            SPRINGARE8
     );
 }

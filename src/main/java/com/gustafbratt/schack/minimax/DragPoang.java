@@ -1,4 +1,4 @@
-package com.gustafbratt.schack.core.minimax;
+package com.gustafbratt.schack.minimax;
 
 import com.gustafbratt.schack.core.Drag;
 
