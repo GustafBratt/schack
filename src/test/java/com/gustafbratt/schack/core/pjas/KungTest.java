@@ -18,7 +18,7 @@ class KungTest {
     void start() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        Kung kung = new Kung(brade, new Position("e8"));
+        Kung kung = new Kung(brade, new Position("e1"));
         assertThat(kung.getMojligaDrag()).hasSize(0);
     }
 
@@ -37,9 +37,9 @@ class KungTest {
     @Test
     void vidMotstandare() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position("d3"), CONST_KUNG);
+        brade.setPjas(new Position("d6"), CONST_KUNG);
         brade.print();
-        Kung kung = new Kung(brade, new Position("d3"));
+        Kung kung = new Kung(brade, new Position("d6"));
         List<Drag> actual = kung.getMojligaDrag();
         //actual.forEach(b -> b.getKommande().print());
         assertThat(actual).hasSize(8);
@@ -48,9 +48,9 @@ class KungTest {
     @Test
     void vidEgna() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position("d6"), CONST_KUNG);
+        brade.setPjas(new Position("d3"), CONST_KUNG);
         brade.print();
-        Kung kung = new Kung(brade, new Position("d6"));
+        Kung kung = new Kung(brade, new Position("d3"));
         List<Drag> actual = kung.getMojligaDrag();
         //actual.forEach(b -> b.getKommande().print());
         assertThat(actual).hasSize(5);

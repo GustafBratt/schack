@@ -59,19 +59,19 @@ public class BradeTest {
         Brade b = skapaBradeMedExtraPjas("a4", '.');
         assertThat(b.poang()).isEqualTo(0);
 
-        b = skapaBradeMedExtraPjas("e8", '.'); //Vit kung borta. Svart vinner.
-        assertThat(b.poang()).isEqualTo(Integer.MIN_VALUE);
+        b = skapaBradeMedExtraPjas("e1", '.'); //Vit kung borta. Svart vinner.
+        assertThat(b.poang()).isEqualTo(Brade.SVART_VINNER);
 
-        b = skapaBradeMedExtraPjas("e1", '.'); //Svart kung borta. VIt vinner
-        assertThat(b.poang()).isEqualTo(Integer.MAX_VALUE);
+        b = skapaBradeMedExtraPjas("e8", '.'); //Svart kung borta. VIt vinner
+        assertThat(b.poang()).isEqualTo(Brade.VIT_VINNER);
 
-        b = skapaBradeMedExtraPjas("e6", 'D');
+        b = skapaBradeMedExtraPjas("e3", 'D');
         assertThat(b.poang()).isEqualTo(9);
         b = b.klonaOchFlippa();
         b.print();
         assertThat(b.poang()).isEqualTo(9);
 
-        b = skapaBradeMedExtraPjas("e6", 'd');
+        b = skapaBradeMedExtraPjas("e3", 'd');
         assertThat(b.poang()).isEqualTo(-9);
         b = b.klonaOchFlippa();
         assertThat(b.poang()).isEqualTo(-9);
@@ -84,7 +84,7 @@ public class BradeTest {
         b.setPjas(new Position("d3"), 'b');
         b.setPjas(new Position("d2"), 'B');
         b.print();
-        assertThat(b.poang()).isEqualTo(Integer.MIN_VALUE);
+        assertThat(b.poang()).isEqualTo(Brade.SVART_VINNER);
     }
     @Test
     public void poang3() throws UtanforBradetException {
@@ -93,7 +93,7 @@ public class BradeTest {
         b.setPjas(new Position("d3"), 'b');
         b.setPjas(new Position("d2"), 'B');
         b.print();
-        assertThat(b.poang()).isEqualTo(Integer.MAX_VALUE);
+        assertThat(b.poang()).isEqualTo(Brade.VIT_VINNER);
     }
 
 
@@ -101,15 +101,15 @@ public class BradeTest {
     public void allaMojligaDrag() throws UtanforBradetException {
         Brade b = new Brade(BONDER_DAM_KUNG);
         b.print();
-        var d = b.allaMojligaDrag();
+        var d = b.beraknaMojligaDrag();
         System.out.println(d);
         assertThat(d).hasSize(20);
         b = b.klonaOchFlippa();
         b.print();
-        d = b.allaMojligaDrag();
+        d = b.beraknaMojligaDrag();
         System.out.println(d);
         assertThat(d).hasSize(20);
-        assertThat(d.stream().map(Drag::toString)).contains("Bh2-h3");
+        assertThat(d.stream().map(Drag::toString)).contains("Bh7-h6");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class BradeTest {
         b.print();
         b = b.klonaOchFlippa();
         b.print();
-        var p = b.getPjas(new Position("d1"));
+        var p = b.getPjas(new Position("d8"));
         System.out.println(p.get());
         /*Bonde bonde = new Bonde(b, new Position("h2"));
         var bondensMojliga = bonde.getMojligaDrag();

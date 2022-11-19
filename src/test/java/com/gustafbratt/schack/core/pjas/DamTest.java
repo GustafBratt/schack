@@ -18,7 +18,7 @@ class DamTest {
     void start() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d8"));
+        Dam dam = new Dam(brade, new Position("d1"));
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(0);
@@ -27,9 +27,9 @@ class DamTest {
     @Test
     void helaBradet() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
-        brade.setPjas(new Position("d8"), CONST_DAM);
+        brade.setPjas(new Position("d1"), CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d8"));
+        Dam dam = new Dam(brade, new Position("d1"));
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(21);
@@ -61,9 +61,9 @@ class DamTest {
     @Test
     void motstandareTorn() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position("h1"), CONST_DAM);
+        brade.setPjas(new Position("h8"), CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("h1"));
+        Dam dam = new Dam(brade, new Position("h8"));
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(3);

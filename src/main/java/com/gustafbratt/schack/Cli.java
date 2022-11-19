@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Cli {
 
     Scanner scanner = new Scanner(System.in);
-    Brade brade = new Brade(Brade.BRADE_INIT_TYP.TORN_MOT_KUNG);
+    Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
 
     public static void main(String[] args) throws UtanforBradetException {
         new Cli().start();

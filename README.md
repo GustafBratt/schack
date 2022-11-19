@@ -4,7 +4,7 @@
 ### Regler
 - [x] Torn
 - [x] Springare (häst)
-- [ ] löpare
+- [x] löpare
 - [ ] Rockad - simpel
 - [ ] Patt
 - [ ] Rockad - kungen får inte stå i schack
@@ -15,8 +15,9 @@
 ### Optimering
 - [ ] Alpha-beta prune
 - [ ] Paralellisering
+- [ ] Iterative deepening
 - [ ] Profilering
-- [ ] Förbättrad poang som känner till att mitten är bra
+- [ ] Förbättrad poang() som föredrar mitten. I början är det värt att offra bönder för att ta område.
 - [ ] Lista på kända öppningar etc
 - [ ] Gui
 

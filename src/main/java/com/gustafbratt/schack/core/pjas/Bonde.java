@@ -28,7 +28,7 @@ public class Bonde extends Pjas {
             }
         } catch (UtanforBradetException ignored) {
         }
-        if ((brade.getAktuellFarg() == Farg.SVART && position.getRad() == 2) || (brade.getAktuellFarg() == Farg.VIT && position.getRad() == 7))  {
+        if ((brade.getAktuellFarg() == Farg.VIT && position.getRad() == 2) || (brade.getAktuellFarg() == Farg.SVART && position.getRad() == 7))  {
             try {
                 if (brade.charPa(brade.framfor(position)) == '.' && brade.charPa(brade.framfor(brade.framfor(position))) == '.') {
                     Drag drag = new Drag(brade, position, brade.framfor(brade.framfor(position)));

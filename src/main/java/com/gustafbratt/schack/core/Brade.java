@@ -62,21 +62,22 @@ public class Brade {
             rutor[7] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
             return;
         }
-        rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'};
-        rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'};
-        rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-        rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-        rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-        rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-        rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'};
-        rutor[7] = new char[]{'T', 'S', 'L', 'D', 'K', 'L', 'S', 'T'};
+        rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart
+        rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'}; //2
+        rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //3
+        rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //4
+        rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //5
+        rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //6
+        rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}; //7
+        rutor[7] = new char[]{'T', 'S', 'L', 'D', 'K', 'L', 'S', 'T'}; //8  Vit
     }
 
     public void print() {
         if (aktuellFarg == VIT) {
             System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
             for (int i = 0; i < 8; i++) {
-                System.out.print(i + 1 + "|");
+                //System.out.print(i + 1 + "|");
+                System.out.print(8 - i + "|");
                 for (int j = 0; j < 8; j++) {
                     System.out.print(rutor[i][j]);
                     System.out.print(" ");
@@ -88,7 +89,8 @@ public class Brade {
         }
         System.out.println("  h g f e d c b a  " + aktuellFarg + "s drag Poäng: " + poang());
         for (int i = 0; i < 8; i++) {
-            System.out.print(8 - i + "|");
+            //System.out.print(8 - i + "|");
+            System.out.print(i + 1 + "|");
             for (int j = 0; j < 8; j++) {
                 System.out.print(rutor[i][j]);
                 System.out.print(" ");
@@ -103,9 +105,11 @@ public class Brade {
         String position = p.asString();
         int kolumnRaw = position.charAt(0) - 'a';
         int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
-        if (aktuellFarg == SVART) {
-            kolumnRaw = 7 - kolumnRaw;
+        if (aktuellFarg == VIT) {
+            //kolumnRaw = 7 - kolumnRaw;
             radRaw = 7 - radRaw;
+        } else {
+            kolumnRaw = 7 - kolumnRaw;
         }
         return rutor[radRaw][kolumnRaw];
     }
@@ -114,9 +118,11 @@ public class Brade {
         String position = p.asString();
         int kolumnRaw = position.charAt(0) - 'a';
         int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
-        if (aktuellFarg == SVART) {
-            kolumnRaw = 7 - kolumnRaw;
+        if (aktuellFarg == VIT) {
+            //kolumnRaw = 7 - kolumnRaw;
             radRaw = 7 - radRaw;
+        } else {
+            kolumnRaw = 7 - kolumnRaw;
         }
         rutor[radRaw][kolumnRaw] = c;
     }
@@ -197,7 +203,7 @@ public class Brade {
         return poangInaktuell - poangAktuell;
     }
 
-    public List<Drag> allaMojligaDrag() throws UtanforBradetException {
+    public List<Drag> beraknaMojligaDrag() throws UtanforBradetException {
         List<Drag> allaDrag = new ArrayList<>();
         for (char i = 'a'; i < 'i'; i++) {
             for (int j = 1; j < 9; j++) {
@@ -218,11 +224,13 @@ public class Brade {
             case Pjas.CONST_KUNG -> valdPjas = new Kung(this, pos);
             case Pjas.CONST_TORN -> valdPjas = new Torn(this, pos);
             case Pjas.CONST_SPRINGARE -> valdPjas = new Springare(this, pos);
+            case Pjas.CONST_LOPARE -> valdPjas = new Lopare(this, pos);
         }
         return Optional.ofNullable(valdPjas);
     }
 
 
+    //TODO hitta bättre värden
     private int getVarde(char c) {
         c = Character.toUpperCase(c);
         return switch (c) {
@@ -230,16 +238,16 @@ public class Brade {
             case Pjas.CONST_KUNG -> 2;
             case Pjas.CONST_TORN -> 6;
             case Pjas.CONST_SPRINGARE -> 5;
+            case Pjas.CONST_LOPARE -> 4;
             case Pjas.CONST_DAM -> 9;
             default -> 0;
         };
     }
 
     public Position framfor(Position position) throws UtanforBradetException {
-
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==SVART) {
+        if(aktuellFarg==VIT) {
             rad++;
         } else {
             rad--;
@@ -250,7 +258,7 @@ public class Brade {
     public Position framforVanster(Position position) throws UtanforBradetException {
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==SVART) {
+        if(aktuellFarg==VIT) {
             rad++;
             kolumn++;
         } else {
@@ -263,7 +271,7 @@ public class Brade {
     public Position framforHoger(Position position) throws UtanforBradetException {
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==SVART) {
+        if(aktuellFarg==VIT) {
             rad++;
             kolumn--;
         } else {

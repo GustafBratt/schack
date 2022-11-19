@@ -18,15 +18,6 @@ class SpringareTest {
         b.print();
 
         {
-            Pjas p = b.getPjas(new Position("b8")).get();
-            var drag = p.getMojligaDrag();
-            System.out.println(drag);
-            assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sb8-c6", "Sb8-a6");
-            drag.sort(Comparator.comparing(Object::toString));
-            b = b.utforDrag(drag.get(1));
-        }
-        {
-            b.print();
             Pjas p = b.getPjas(new Position("b1")).get();
             var drag = p.getMojligaDrag();
             System.out.println(drag);
@@ -36,10 +27,19 @@ class SpringareTest {
         }
         {
             b.print();
-            Pjas p = b.getPjas(new Position("c6")).get();
+            Pjas p = b.getPjas(new Position("b8")).get();
             var drag = p.getMojligaDrag();
             System.out.println(drag);
-            assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sc6-d4", "Sc6-b8", "Sc6-b4", "Sc6-e5", "Sc6-a5");
+            assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sb8-c6", "Sb8-a6");
+            drag.sort(Comparator.comparing(Object::toString));
+            b = b.utforDrag(drag.get(1));
+        }
+        {
+            b.print();
+            Pjas p = b.getPjas(new Position("c3")).get();
+            var drag = p.getMojligaDrag();
+            System.out.println(drag);
+            assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sc3-d5", "Sc3-b5", "Sc3-b1", "Sc3-e4", "Sc3-a4");
             drag.sort(Comparator.comparing(Object::toString));
             b = b.utforDrag(drag.get(1));
         }

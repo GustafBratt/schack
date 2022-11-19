@@ -14,31 +14,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BondeTest {
     @Test
     void hogerKant() throws UtanforBradetException {
-        List<Drag> mojligaDrag = skapaBrade("h7", "g6", 'l');
+        List<Drag> mojligaDrag = skapaBrade("h2", "g3", 'l');
         assertThat(mojligaDrag).hasSize(3);
     }
 
     @Test
     void lopareFramfor() throws UtanforBradetException {
-        List<Drag> mojligaDrag = skapaBrade("g7", "g6", 'l');
+        List<Drag> mojligaDrag = skapaBrade("g2", "g3", 'l');
         assertThat(mojligaDrag).hasSize(0);
     }
 
     @Test
     void lopareTvaStegFramfor() throws UtanforBradetException {
-        List<Drag> mojligaDrag = skapaBrade("g7", "g5", 'l');
+        List<Drag> mojligaDrag = skapaBrade("g2", "g4", 'l');
         assertThat(mojligaDrag).hasSize(1);
     }
 
     @Test
     void vidMotstandarLinje() throws UtanforBradetException {
-        List<Drag> mojligaDrag = skapaBrade("d3", "d3", 'B');
+        List<Drag> mojligaDrag = skapaBrade("d6", "d6", 'B');
         assertThat(mojligaDrag).hasSize(2);
     }
 
     @Test
     void sammaFramfor() throws UtanforBradetException {
-        List<Drag> mojligaDrag = skapaBrade("c7", "c6", 'D');
+        List<Drag> mojligaDrag = skapaBrade("c2", "c3", 'D');
         assertThat(mojligaDrag).hasSize(0);
     }
 
@@ -46,14 +46,14 @@ class BondeTest {
     void hogerKantSvart() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        var drag = new Drag(brade, new Position("a7"), new Position("a6"));
+        var drag = new Drag(brade, new Position("a2"), new Position("a3"));
         brade = brade.utforDrag(drag);
         brade.print();
-        Bonde bonde = new Bonde(brade, new Position("g2"));
+        Bonde bonde = new Bonde(brade, new Position("g7"));
         List<Drag> mojligaDrag = bonde.getMojligaDrag();
         System.out.println(mojligaDrag);
         assertThat(mojligaDrag).hasSize(2);
-        assertThat(mojligaDrag.stream().map(Drag::toString)).contains("Bg2-g3", "Bg2-g4");
+        assertThat(mojligaDrag.stream().map(Drag::toString)).contains("Bg7-g6", "Bg7-g5");
     }
 
 

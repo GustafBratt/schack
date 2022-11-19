@@ -11,6 +11,7 @@ public abstract class Pjas {
     public static final char CONST_DAM = 'D';
     public static final char CONST_TORN = 'T';
     public static final char CONST_SPRINGARE = 'S';
+    public static final char CONST_LOPARE = 'L';
 
     final Brade brade;
     final Position position;

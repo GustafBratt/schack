@@ -21,7 +21,7 @@ public class MinMax {
         if(node.poang() > 5_000 || node.poang() < -5_000) { // Svart vill ha litet. djupt ner har låg depth
             return new DragPoang(null, node.poang()+depth); //TODO if maximzingPlayer?
         }
-        List<Drag> allaMojligaDrag = node.allaMojligaDrag();
+        List<Drag> allaMojligaDrag = node.beraknaMojligaDrag();
         Collections.shuffle(allaMojligaDrag);
         int value;
         int dragpekare = 0;
