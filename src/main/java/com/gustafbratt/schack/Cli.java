@@ -43,7 +43,7 @@ public class Cli {
                 brade = brade.utforDrag(d);
             } else {
                 System.out.println("startar minmax");
-                int startDjup = 5;
+                int startDjup = 4;
                 var resultat = new MinMax(startDjup).minimax(brade, startDjup, false);
                 var beraknat = resultat.getDrag();
                 System.out.println("minmax klar: " + beraknat);

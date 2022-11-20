@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
 
 public class Brade {
@@ -158,17 +157,51 @@ public class Brade {
 
     public int poang() {
         if(poang.isEmpty()) {
-            poang = Optional.of(beraknaPoang());
+            //poang = Optional.of(beraknaPoangPjaserPoang());
+            poang = Optional.of(beraknaPoangFlyttaFram());
         }
         return poang.get();
     }
 
     public static final int VIT_VINNER = 10_000;
     public static final int SVART_VINNER = -10_000;
-
+    int beraknaPoangFlyttaFram() {
+        int poangAktuell = 0;
+        int poangInaktuell = 0;
+        boolean aktuellKungHittad = false;
+        boolean inaktuellKungHittad = false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (Character.isUpperCase(rutor[i][j])) {
+                    poangAktuell += 8 - i;
+                }
+                if (Character.isLowerCase(rutor[i][j])) {
+                    poangInaktuell += i + 1;
+                }
+                if (rutor[i][j] == 'K')
+                    aktuellKungHittad = true;
+                if (rutor[i][j] == 'k')
+                    inaktuellKungHittad = true;
+            }
+        }
+        if (!aktuellKungHittad && !inaktuellKungHittad)
+            return 0;
+        if (aktuellFarg == VIT) {
+            if (!aktuellKungHittad) //Vit kung är tagen
+                return SVART_VINNER;
+            if (!inaktuellKungHittad)
+                return VIT_VINNER;
+            return poangAktuell - poangInaktuell;
+        }
+        if (!aktuellKungHittad) //Svart kung är tagen
+            return VIT_VINNER;
+        if (!inaktuellKungHittad)
+            return SVART_VINNER;
+        return poangInaktuell - poangAktuell;
+    }
     //MAX_INT vit vinner
     //MIN_INT svart vinner
-    private int beraknaPoang() {
+    private int beraknaPoangPjaserPoang() {
         int poangAktuell = 0;
         int poangInaktuell = 0;
         boolean aktuellKungHittad = false;
