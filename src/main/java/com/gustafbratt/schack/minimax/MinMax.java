@@ -4,7 +4,6 @@ import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Drag;
 import com.gustafbratt.schack.core.UtanforBradetException;
 
-import java.util.Collections;
 import java.util.List;
 
 import static java.lang.Math.max;
@@ -25,8 +24,7 @@ public class MinMax {
             return new DragPoang(null, node.poang());
         }
         List<Drag> allaMojligaDrag = node.beraknaMojligaDrag();
-        Collections.shuffle(allaMojligaDrag);
-        Collections.reverse(allaMojligaDrag);
+        //Collections.shuffle(allaMojligaDrag);
         int value;
         Drag bastaDrag = null;
         if (maximizingPlayer) { //vit
@@ -38,15 +36,15 @@ public class MinMax {
                     value = dp.getPoang();
                     bastaDrag = drag;
                 }
-                //if (value >= beta)
-                //    break;
+                if (value > beta)
+                    break;
                 alpha = max(alpha, value);
             }
         } else { //svart
             value = Integer.MAX_VALUE;
             for (Drag drag : allaMojligaDrag) {
                 if (startDjup == depth) {
-                        System.out.print(drag+ " ");
+                    System.out.print(drag + " ");
                 }
                 Brade child = node.utforDrag(drag);
                 DragPoang dp = minimax(child, depth - 1, true, alpha, beta);
@@ -54,8 +52,8 @@ public class MinMax {
                     value = dp.getPoang();
                     bastaDrag = drag;
                 }
-                //if (value <= alpha)
-                //    break;
+                if (value < alpha)
+                    break;
                 beta = min(beta, value);
             }
             if (startDjup == depth) {

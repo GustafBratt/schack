@@ -33,7 +33,6 @@ public class Cli {
             if (brade.getAktuellFarg() == Farg.VIT) {
                 Position start = valjPjas();
                 Pjas valdPjas = null;
-
                 brade.getPjas(start);
                 if (brade.getPjas(start).isEmpty())
                     continue;
@@ -45,7 +44,7 @@ public class Cli {
                 brade = brade.utforDrag(d);
             } else {
                 System.out.println("startar minmax");
-                int startDjup = 4;
+                int startDjup = 5;
                 var resultat = new MinMax(startDjup).minimax(brade, startDjup, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 var beraknat = resultat.getDrag();
                 System.out.println("minmax klar: " + beraknat);
