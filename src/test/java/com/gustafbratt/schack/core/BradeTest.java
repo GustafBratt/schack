@@ -2,7 +2,6 @@ package com.gustafbratt.schack.core;
 
 import com.gustafbratt.schack.core.pjas.Bonde;
 import com.gustafbratt.schack.core.pjas.Kung;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.*;
@@ -52,27 +51,19 @@ public class BradeTest {
     }
 
     @Test
-    @Disabled //Annan poäng.räknare
     public void poang() throws UtanforBradetException {
-        Brade b = skapaBradeMedExtraPjas("a4", '.');
-        assertThat(b.poang()).isEqualTo(0);
-
-        b = skapaBradeMedExtraPjas("e1", '.'); //Vit kung borta. Svart vinner.
-        assertThat(b.poang()).isEqualTo(Brade.SVART_VINNER);
-
-        b = skapaBradeMedExtraPjas("e8", '.'); //Svart kung borta. VIt vinner
-        assertThat(b.poang()).isEqualTo(Brade.VIT_VINNER);
-
-        b = skapaBradeMedExtraPjas("e3", 'D');
-        assertThat(b.poang()).isEqualTo(9);
-        b = b.klonaOchFlippa();
+        Brade b = new Brade(START);
+        System.out.println("==== START ====");
         b.print();
-        assertThat(b.poang()).isEqualTo(9);
-
-        b = skapaBradeMedExtraPjas("e3", 'd');
-        assertThat(b.poang()).isEqualTo(-9);
-        b = b.klonaOchFlippa();
-        assertThat(b.poang()).isEqualTo(-9);
+        System.out.println("== SLUT START =");
+        int startPoang = b.poang();
+        assertThat(startPoang).isEqualTo(0);
+        b = b.utforDrag(new Drag(b, new Position("e2"), new Position("e3")));
+        b.print();
+        assertThat(b.poang()).isGreaterThan(0);
+        b = b.utforDrag(new Drag(b, new Position("e7"), new Position("e5")));
+        b.print();
+        assertThat(b.poang()).isLessThan(0);
     }
 
     @Test
@@ -82,11 +73,11 @@ public class BradeTest {
         b.setPjas(new Position("e1"), 'K');
         b.setPjas(new Position("e8"), 'k');
         b.print();
-        System.out.println(b.beraknaPoangFlyttaFram());
-        assertThat(b.poang()).isEqualTo(1);
+        System.out.println(b.beraknaPoang());
+        assertThat(b.poang()).isEqualTo(2); //En poäng för existens, en poäng för rad.
         b.setPjas(new Position("a2"), 'D');
         b.print();
-        assertThat(b.beraknaPoangFlyttaFram()).isEqualTo(3);
+        assertThat(b.beraknaPoang()).isEqualTo(13); //2 + 9 + 2
     }
 
     @Test
@@ -96,8 +87,17 @@ public class BradeTest {
         b.setPjas(new Position("e1"), 'K');
         b.setPjas(new Position("e8"), 'k');
         b.print();
-        System.out.println(b.beraknaPoangFlyttaFram());
+        System.out.println(b.beraknaPoang());
 
+    }
+
+    @Test
+    public void poang4() throws UtanforBradetException {
+        Brade b = new Brade(TORN_MOT_KUNG);
+        b.print();
+        Drag d = new Drag(b, new Position("h8"), new Position("h7"));
+        b = b.utforDrag(d);
+        b.print();
     }
 
     @Test
@@ -107,7 +107,7 @@ public class BradeTest {
         b.setPjas(new Position("d3"), 'b');
         b.setPjas(new Position("d2"), 'B');
         b.print();
-        assertThat(b.poang()).isEqualTo(Brade.SVART_VINNER);
+        assertThat(b.poang()).isLessThan(5_000);
     }
 
     @Test
@@ -117,7 +117,7 @@ public class BradeTest {
         b.setPjas(new Position("d3"), 'b');
         b.setPjas(new Position("d2"), 'B');
         b.print();
-        assertThat(b.poang()).isEqualTo(Brade.VIT_VINNER);
+        assertThat(b.poang()).isGreaterThan(5_000);
     }
 
 

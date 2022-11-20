@@ -3,15 +3,18 @@ package com.gustafbratt.schack.core;
 import com.gustafbratt.schack.core.pjas.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static com.gustafbratt.schack.core.Farg.VIT;
 
 public class Brade {
-    private final char[][] rutor = new char[8][8];
+    final char[][] rutor = new char[8][8];
     private Optional<Integer> poang = Optional.empty();
     Farg aktuellFarg = VIT;
+    private int antalDrag = 0;
+    private ArrayList<Drag> dragHistorik = new ArrayList<>();
 
     public Brade(BRADE_INIT_TYP typ) {
         if (typ == BRADE_INIT_TYP.INGEN_INIT) {
@@ -50,15 +53,15 @@ public class Brade {
             rutor[7] = new char[]{'T', '.', '.', 'D', 'K', '.', '.', 'T'};
             return;
         }
-        if(typ == BRADE_INIT_TYP.TORN_MOT_KUNG) {
-            rutor[0] = new char[]{'t', 's', 'd', 'k', '.', '.', '.', 't'};
-            rutor[1] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
+        if (typ == BRADE_INIT_TYP.TORN_MOT_KUNG) {
+            rutor[0] = new char[]{'.', '.', '.', '.', '.', 'k', '.', '.'};
+            rutor[1] = new char[]{'.', 'b', 'b', '.', 'b', 'b', '.', '.'};
             rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'.', '.', '.', '.', 'B', '.', '.', '.'};;
-            rutor[7] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
+            rutor[6] = new char[]{'.', '.', '.', 'D', 'K', '.', '.', '.'};
+            rutor[7] = new char[]{'.', '.', '.', 'T', '.', '.', '.', '.'};
             return;
         }
         rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart
@@ -71,7 +74,12 @@ public class Brade {
         rutor[7] = new char[]{'T', 'S', 'L', 'D', 'K', 'L', 'S', 'T'}; //8  Vit
     }
 
+    public List<Drag> getDraghistorik() {
+        return Collections.unmodifiableList(dragHistorik);
+    }
+
     public void print() {
+        System.out.println("Antal drag genomförda: " + antalDrag);
         if (aktuellFarg == VIT) {
             System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
             for (int i = 0; i < 8; i++) {
@@ -127,7 +135,13 @@ public class Brade {
     }
 
     public Brade utforDrag(Drag drag) {
+        if(!Character.isUpperCase(charPa(drag.getStart()))) {
+            throw new IllegalStateException("Inte en aktiv pjäs på " + drag.getStart() + ". Det är en " + charPa(drag.getStart()));
+        }
         Brade b2 = klonaOchFlippa();
+        b2.antalDrag = antalDrag + 1;
+        b2.dragHistorik.addAll(dragHistorik);
+        b2.dragHistorik.add(drag);
         char pjas = b2.charPa(drag.getStart());
         b2.setPjas(drag.getTill(), pjas);
         b2.setPjas(drag.getStart(), '.');
@@ -156,84 +170,36 @@ public class Brade {
     }
 
     public int poang() {
-        if(poang.isEmpty()) {
-            //poang = Optional.of(beraknaPoangPjaserPoang());
-            poang = Optional.of(beraknaPoangFlyttaFram());
+        if (poang.isEmpty()) {
+            poang = Optional.of(beraknaPoang());
         }
         return poang.get();
     }
 
-    public static final int VIT_VINNER = 10_000;
-    public static final int SVART_VINNER = -10_000;
-    int beraknaPoangFlyttaFram() {
-        int poangAktuell = 0;
-        int poangInaktuell = 0;
-        boolean aktuellKungHittad = false;
-        boolean inaktuellKungHittad = false;
+    //Vit maximerar
+    int beraknaPoang() {
+        int poang = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (Character.isUpperCase(rutor[i][j])) {
-                    poangAktuell += 8 - i;
+                    poang += 8 - i;
+                    poang += getVarde(rutor[i][j]);
                 }
                 if (Character.isLowerCase(rutor[i][j])) {
-                    poangInaktuell += i + 1;
+                    poang -= i + 1;
+                    poang -= getVarde(rutor[i][j]);
                 }
-                if (rutor[i][j] == 'K')
-                    aktuellKungHittad = true;
-                if (rutor[i][j] == 'k')
-                    inaktuellKungHittad = true;
             }
         }
-        if (!aktuellKungHittad && !inaktuellKungHittad)
-            return 0;
-        if (aktuellFarg == VIT) {
-            if (!aktuellKungHittad) //Vit kung är tagen
-                return SVART_VINNER;
-            if (!inaktuellKungHittad)
-                return VIT_VINNER;
-            return poangAktuell - poangInaktuell;
+        if(poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
+            poang = 5_000 - antalDrag;
         }
-        if (!aktuellKungHittad) //Svart kung är tagen
-            return VIT_VINNER;
-        if (!inaktuellKungHittad)
-            return SVART_VINNER;
-        return poangInaktuell - poangAktuell;
-    }
-    //MAX_INT vit vinner
-    //MIN_INT svart vinner
-    private int beraknaPoangPjaserPoang() {
-        int poangAktuell = 0;
-        int poangInaktuell = 0;
-        boolean aktuellKungHittad = false;
-        boolean inaktuellKungHittad = false;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (Character.isUpperCase(rutor[i][j])) {
-                    poangAktuell += getVarde(rutor[i][j]);
-                }
-                if (Character.isLowerCase(rutor[i][j])) {
-                    poangInaktuell += getVarde(rutor[i][j]);
-                }
-                if (rutor[i][j] == 'K')
-                    aktuellKungHittad = true;
-                if (rutor[i][j] == 'k')
-                    inaktuellKungHittad = true;
-            }
+        if(poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
+            poang =  -5_000 + antalDrag;
         }
-        if (!aktuellKungHittad && !inaktuellKungHittad)
-            return 0;
-        if (aktuellFarg == VIT) {
-            if (!aktuellKungHittad) //Vit kung är tagen
-                return SVART_VINNER;
-            if (!inaktuellKungHittad)
-                return VIT_VINNER;
-            return poangAktuell - poangInaktuell;
-        }
-        if (!aktuellKungHittad) //Svart kung är tagen
-            return VIT_VINNER;
-        if (!inaktuellKungHittad)
-            return SVART_VINNER;
-        return poangInaktuell - poangAktuell;
+        if(aktuellFarg == VIT)
+            return poang;
+        return -poang;
     }
 
     public List<Drag> beraknaMojligaDrag() throws UtanforBradetException {
@@ -268,7 +234,7 @@ public class Brade {
         c = Character.toUpperCase(c);
         return switch (c) {
             case Pjas.CONST_BONDE -> 1;
-            case Pjas.CONST_KUNG -> 2;
+            case Pjas.CONST_KUNG -> 10_000;
             case Pjas.CONST_TORN -> 6;
             case Pjas.CONST_SPRINGARE -> 5;
             case Pjas.CONST_LOPARE -> 4;
@@ -280,38 +246,38 @@ public class Brade {
     public Position framfor(Position position) throws UtanforBradetException {
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==VIT) {
+        if (aktuellFarg == VIT) {
             rad++;
         } else {
             rad--;
         }
-        return new Position(""+kolumn + rad);
+        return new Position("" + kolumn + rad);
     }
 
     public Position framforVanster(Position position) throws UtanforBradetException {
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==VIT) {
+        if (aktuellFarg == VIT) {
             rad++;
             kolumn++;
         } else {
             rad--;
             kolumn--;
         }
-        return new Position(""+kolumn + rad);
+        return new Position("" + kolumn + rad);
     }
 
     public Position framforHoger(Position position) throws UtanforBradetException {
         int rad = Integer.parseInt(position.asString().charAt(1) + "");
         char kolumn = position.asString().charAt(0);
-        if(aktuellFarg==VIT) {
+        if (aktuellFarg == VIT) {
             rad++;
             kolumn--;
         } else {
             rad--;
             kolumn++;
         }
-        return new Position(""+kolumn + rad);
+        return new Position("" + kolumn + rad);
     }
 
 

@@ -19,11 +19,13 @@ public class Cli {
     public void start() throws UtanforBradetException {
         System.out.println("Nu kör vi");
         while (true) {
-            if (brade.poang() > 5_000) {
+            if (brade.poang() > 3_000) {
+                brade.print();
                 System.out.println("Vit vinner. Tack för en god martch.");
                 System.exit(0);
             }
-            if (brade.poang() < -5_000) {
+            if (brade.poang() < -3_000) {
+                brade.print();
                 System.out.println("Svart vinner. Tack för en god martch.");
                 System.exit(0);
             }
@@ -44,7 +46,7 @@ public class Cli {
             } else {
                 System.out.println("startar minmax");
                 int startDjup = 4;
-                var resultat = new MinMax(startDjup).minimax(brade, startDjup, false);
+                var resultat = new MinMax(startDjup).minimax(brade, startDjup, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 var beraknat = resultat.getDrag();
                 System.out.println("minmax klar: " + beraknat);
                 System.out.println("Möjlig poäng: " + resultat.getPoang());
