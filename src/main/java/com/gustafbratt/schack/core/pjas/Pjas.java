@@ -14,32 +14,34 @@ public abstract class Pjas {
     public static final char CONST_LOPARE = 'L';
 
     final Brade brade;
-    final Position position;
+    final String position;
 
     final List<Drag> mojligaDrag = new ArrayList<>();
 
-    public Pjas(Brade brade, Position position) {
+    public Pjas(Brade brade, String position) {
         this.brade = brade;
         this.position = position;
     }
 
-    boolean ledigEllerMotstandare(Position position) {
+    boolean ledigEllerMotstandare(String position) {
         char pjas = brade.charPa(position);
         return pjas == '.' || Character.isLowerCase(pjas);
     }
 
     void skapaLinjeMedDrag(Riktning riktning) {
-        Position pekare = position;
+        String pekare = position;
         try {
             do {
                 pekare = riktning.flytta(pekare);
+                PositionUtils.validera(pekare);
                 skapaDragOmLedigEllerMotstandare(pekare);
             } while (brade.charPa(pekare) == '.');
         } catch (UtanforBradetException ignored) {
         }
     }
 
-    void skapaDragOmLedigEllerMotstandare(Position positionTill) {
+    void skapaDragOmLedigEllerMotstandare(String positionTill) throws UtanforBradetException {
+        PositionUtils.validera(positionTill);
         if (ledigEllerMotstandare(positionTill)) {
             Drag drag = new Drag(brade, this.position, positionTill);
             mojligaDrag.add(drag);

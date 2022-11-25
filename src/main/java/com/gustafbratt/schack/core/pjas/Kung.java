@@ -2,11 +2,9 @@ package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.*;
 
-import java.util.List;
-
 public class Kung extends Pjas {
 
-    public Kung(Brade brade, Position position) {
+    public Kung(Brade brade, String position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
         if (pjasKod != CONST_KUNG) {
@@ -19,8 +17,22 @@ public class Kung extends Pjas {
         for(Riktning riktning : Riktning.ALLARIKTNINGAR) {
             try {
                 skapaDragOmLedigEllerMotstandare(riktning.flytta(position));
-            } catch (UtanforBradetException ignored) { }
+            } catch (UtanforBradetException ignored) {
+            }
         }
+        //Kungen får inte vara i schack TODO
+        //Kungen får inte ha fylltat på sig
+        if(!brade.aktuellKungHarFlyttatPaSig()) {
+            rockada();
+            rockadh();
+        }
+    }
+
+    private void rockadh() {
+    }
+
+    private void rockada() {
+
     }
 
     @Override

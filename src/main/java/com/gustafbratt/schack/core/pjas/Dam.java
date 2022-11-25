@@ -1,15 +1,11 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
-import com.gustafbratt.schack.core.Position;
 import com.gustafbratt.schack.core.Riktning;
-
-import java.util.List;
 
 public class Dam extends Pjas {
 
-    public Dam(Brade brade, Position position) {
+    public Dam(Brade brade, String position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
         if (pjasKod != CONST_DAM) {

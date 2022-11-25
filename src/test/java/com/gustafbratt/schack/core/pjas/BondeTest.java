@@ -2,9 +2,7 @@ package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Drag;
-import com.gustafbratt.schack.core.Position;
 import com.gustafbratt.schack.core.UtanforBradetException;
-import com.gustafbratt.schack.core.pjas.Bonde;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -46,10 +44,10 @@ class BondeTest {
     void hogerKantSvart() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        var drag = new Drag(brade, new Position("a2"), new Position("a3"));
+        var drag = new Drag(brade, "a2", "a3");
         brade = brade.utforDrag(drag);
         brade.print();
-        Bonde bonde = new Bonde(brade, new Position("g7"));
+        Bonde bonde = new Bonde(brade, "g7");
         List<Drag> mojligaDrag = bonde.getMojligaDrag();
         System.out.println(mojligaDrag);
         assertThat(mojligaDrag).hasSize(2);
@@ -59,9 +57,9 @@ class BondeTest {
 
     private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position(extraPjasPos), extraPjasTyp);
+        brade.setPjas(extraPjasPos, extraPjasTyp);
         brade.print();
-        Bonde bonde = new Bonde(brade, new Position(bondePos));
+        Bonde bonde = new Bonde(brade, bondePos);
         List<Drag> mojligaDrag = bonde.getMojligaDrag();
         System.out.println("Möjliga drag:" + mojligaDrag);
         return mojligaDrag;

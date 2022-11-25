@@ -2,16 +2,22 @@ package com.gustafbratt.schack.core;
 
 public class Drag {
     char pjas;
-    final Position start;
-    final Position till;
+    final String start;
+    final String till;
+    final Brade brade;
 
-    public Drag(Brade brade, Position start, Position till) {
+    public Drag(Brade brade, String start, String till) {
         this.pjas = brade.charPa(start);
         this.start = start;
         this.till = till;
+        this.brade = brade;
     }
 
-    public Position getTill() {
+    public Brade utfor(){
+        return brade.utforDrag(this);
+    }
+
+    public String getTill() {
         return till;
     }
 
@@ -20,7 +26,7 @@ public class Drag {
         return "" + pjas + start + "-" + till;
     }
 
-    public Position getStart() {
+    public String getStart() {
         return start;
     }
 }

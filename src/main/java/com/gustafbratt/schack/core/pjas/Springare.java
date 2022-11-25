@@ -1,12 +1,11 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Position;
 import com.gustafbratt.schack.core.Riktning;
 import com.gustafbratt.schack.core.UtanforBradetException;
 
 public class Springare extends Pjas {
-    public Springare(Brade brade, Position position) {
+    public Springare(Brade brade, String position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
         if (pjasKod != CONST_SPRINGARE) {

@@ -2,9 +2,7 @@ package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Drag;
-import com.gustafbratt.schack.core.Position;
 import com.gustafbratt.schack.core.UtanforBradetException;
-import com.gustafbratt.schack.core.pjas.Dam;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,7 +16,7 @@ class DamTest {
     void start() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d1"));
+        Dam dam = new Dam(brade, "d1");
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(0);
@@ -27,9 +25,9 @@ class DamTest {
     @Test
     void helaBradet() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
-        brade.setPjas(new Position("d1"), CONST_DAM);
+        brade.setPjas("d1", CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d1"));
+        Dam dam = new Dam(brade, "d1");
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(21);
@@ -38,9 +36,9 @@ class DamTest {
     @Test
     void mitten() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
-        brade.setPjas(new Position("d4"), CONST_DAM);
+        brade.setPjas("d4", CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d4"));
+        Dam dam = new Dam(brade, "d4");
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(27); //TODO 27
@@ -49,9 +47,9 @@ class DamTest {
     @Test
     void mittenMedPjaser() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position("d4"), CONST_DAM);
+        brade.setPjas("d4", CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("d4"));
+        Dam dam = new Dam(brade, "d4");
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         //actual.forEach(d -> d.getKommande().print());
@@ -61,9 +59,9 @@ class DamTest {
     @Test
     void motstandareTorn() throws UtanforBradetException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
-        brade.setPjas(new Position("h8"), CONST_DAM);
+        brade.setPjas("h8", CONST_DAM);
         brade.print();
-        Dam dam = new Dam(brade, new Position("h8"));
+        Dam dam = new Dam(brade, "h8");
         List<Drag> actual = dam.getMojligaDrag();
         System.out.println(actual);
         assertThat(actual).hasSize(3);

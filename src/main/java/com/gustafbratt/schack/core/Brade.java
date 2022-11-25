@@ -9,12 +9,15 @@ import java.util.Optional;
 
 import static com.gustafbratt.schack.core.Farg.VIT;
 
+
 public class Brade {
     final char[][] rutor = new char[8][8];
     private Optional<Integer> poang = Optional.empty();
     Farg aktuellFarg = VIT;
     private int antalDrag = 0;
     private ArrayList<Drag> dragHistorik = new ArrayList<>();
+    private boolean vitKungFlyttad;
+    private boolean svartKungFlyttad;
 
     public Brade(BRADE_INIT_TYP typ) {
         if (typ == BRADE_INIT_TYP.INGEN_INIT) {
@@ -55,13 +58,13 @@ public class Brade {
         }
         if (typ == BRADE_INIT_TYP.TORN_MOT_KUNG) {
             rutor[0] = new char[]{'.', '.', '.', '.', '.', 'k', '.', '.'};
-            rutor[1] = new char[]{'.', 'b', 'b', '.', 'b', 'b', '.', '.'};
+            rutor[1] = new char[]{'.', '.', '.', 's', 'l', '.', '.', '.'};
             rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'.', '.', '.', 'D', 'K', '.', '.', '.'};
-            rutor[7] = new char[]{'.', '.', '.', 'T', '.', '.', '.', '.'};
+            rutor[6] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
+            rutor[7] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             return;
         }
         rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart
@@ -108,8 +111,7 @@ public class Brade {
 
     }
 
-    public char charPa(Position p) {
-        String position = p.asString();
+    public char charPa(String position) {
         int kolumnRaw = position.charAt(0) - 'a';
         int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
         if (aktuellFarg == VIT) {
@@ -121,8 +123,7 @@ public class Brade {
         return rutor[radRaw][kolumnRaw];
     }
 
-    public void setPjas(Position p, char c) {
-        String position = p.asString();
+    public void setPjas(String position, char c) {
         int kolumnRaw = position.charAt(0) - 'a';
         int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
         if (aktuellFarg == VIT) {
@@ -135,7 +136,7 @@ public class Brade {
     }
 
     public Brade utforDrag(Drag drag) {
-        if(!Character.isUpperCase(charPa(drag.getStart()))) {
+        if (!Character.isUpperCase(charPa(drag.getStart()))) {
             throw new IllegalStateException("Inte en aktiv pjäs på " + drag.getStart() + ". Det är en " + charPa(drag.getStart()));
         }
         Brade b2 = klonaOchFlippa();
@@ -145,6 +146,12 @@ public class Brade {
         char pjas = b2.charPa(drag.getStart());
         b2.setPjas(drag.getTill(), pjas);
         b2.setPjas(drag.getStart(), '.');
+        if (drag.getStart().equals("e1")) {
+            b2.vitKungFlyttad = true;
+        }
+        if (drag.getStart().equals("e8")) {
+            b2.svartKungFlyttad = true;
+        }
         return b2;
     }
 
@@ -156,6 +163,8 @@ public class Brade {
             }
         }
         nya.aktuellFarg = aktuellFarg.andra();
+        nya.vitKungFlyttad = vitKungFlyttad;
+        nya.svartKungFlyttad = svartKungFlyttad;
         return nya;
     }
 
@@ -191,22 +200,22 @@ public class Brade {
                 }
             }
         }
-        if(poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
+        if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
             poang = 5_000 - antalDrag;
         }
-        if(poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
-            poang =  -5_000 + antalDrag;
+        if (poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
+            poang = -5_000 + antalDrag;
         }
-        if(aktuellFarg == VIT)
+        if (aktuellFarg == VIT)
             return poang;
         return -poang;
     }
 
-    public List<Drag> beraknaMojligaDrag() throws UtanforBradetException {
+    public List<Drag> beraknaMojligaDrag() {
         List<Drag> allaDrag = new ArrayList<>();
         for (char i = 'a'; i < 'i'; i++) {
             for (int j = 1; j < 9; j++) {
-                Position pos = new Position("" + i + j);
+                String pos = "" + i + j;
                 Optional<Pjas> p = getPjas(pos);
                 p.ifPresent(pjas -> allaDrag.addAll(pjas.getMojligaDrag()));
             }
@@ -215,7 +224,8 @@ public class Brade {
     }
 
 
-    public Optional<Pjas> getPjas(Position pos) throws UtanforBradetException {
+
+    public Optional<Pjas> getPjas(String pos) {
         Pjas valdPjas = null;
         switch (charPa(pos)) {
             case Pjas.CONST_BONDE -> valdPjas = new Bonde(this, pos);
@@ -243,20 +253,20 @@ public class Brade {
         };
     }
 
-    public Position framfor(Position position) throws UtanforBradetException {
-        int rad = Integer.parseInt(position.asString().charAt(1) + "");
-        char kolumn = position.asString().charAt(0);
+    public String framfor(String position) throws UtanforBradetException {
+        int rad = Integer.parseInt(position.charAt(1) + "");
+        char kolumn = position.charAt(0);
         if (aktuellFarg == VIT) {
             rad++;
         } else {
             rad--;
         }
-        return new Position("" + kolumn + rad);
+        return "" + kolumn + rad;
     }
 
-    public Position framforVanster(Position position) throws UtanforBradetException {
-        int rad = Integer.parseInt(position.asString().charAt(1) + "");
-        char kolumn = position.asString().charAt(0);
+    public String framforVanster(String position) throws UtanforBradetException {
+        int rad = Integer.parseInt(position.charAt(1) + "");
+        char kolumn = position.charAt(0);
         if (aktuellFarg == VIT) {
             rad++;
             kolumn++;
@@ -264,12 +274,12 @@ public class Brade {
             rad--;
             kolumn--;
         }
-        return new Position("" + kolumn + rad);
+        return "" + kolumn + rad;
     }
 
-    public Position framforHoger(Position position) throws UtanforBradetException {
-        int rad = Integer.parseInt(position.asString().charAt(1) + "");
-        char kolumn = position.asString().charAt(0);
+    public String framforHoger(String position) throws UtanforBradetException {
+        int rad = Integer.parseInt(position.charAt(1) + "");
+        char kolumn = position.charAt(0);
         if (aktuellFarg == VIT) {
             rad++;
             kolumn--;
@@ -277,7 +287,14 @@ public class Brade {
             rad--;
             kolumn++;
         }
-        return new Position("" + kolumn + rad);
+        return "" + kolumn + rad;
+    }
+
+    public boolean aktuellKungHarFlyttatPaSig() {
+        if (aktuellFarg == VIT) {
+            return vitKungFlyttad;
+        }
+        return svartKungFlyttad;
     }
 
 
