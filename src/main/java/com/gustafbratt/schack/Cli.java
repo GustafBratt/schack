@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Cli {
 
     Scanner scanner = new Scanner(System.in);
-    Brade brade = new Brade(Brade.BRADE_INIT_TYP.TORN_MOT_KUNG);
+    Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
 
     public static void main(String[] args) throws UtanforBradetException {
         new Cli().start();
@@ -25,7 +25,7 @@ public class Cli {
         while (true) {
             if (brade.poang() > 3_000) {
                 brade.print();
-                System.out.println("Vit vinner. Tack för en god martch.");
+                System.out.println("Vit vinner. Tack för en god match.");
                 System.exit(0);
             }
             if (brade.poang() < -3_000) {
@@ -44,15 +44,15 @@ public class Cli {
                 System.out.println("Giltiga drag: " + giltigaDrag);
                 String  till = valjTill(giltigaDrag);
                 Drag d = new Drag(brade, start, till);
-                brade = brade.utforDrag(d);
+                brade = new Brade(d);
             } else {
                 System.out.println("startar minmax");
-                int startDjup = 8;
+                int startDjup = 4;
                 var resultat = new MinMax(startDjup).minimax(brade, startDjup, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 var beraknat = resultat.getDrag();
                 System.out.println("minmax klar: " + beraknat);
                 System.out.println("Möjlig poäng: " + resultat.getPoang());
-                brade = brade.utforDrag(beraknat);
+                brade = new Brade(beraknat);
             }
         }
     }

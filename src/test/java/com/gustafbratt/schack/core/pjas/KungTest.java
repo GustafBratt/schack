@@ -85,7 +85,7 @@ class KungTest {
         brade.setPjas("e1", 'k');
         brade.print();
         Drag d1 = new Drag(brade, "d7", "d5");
-        brade = brade.utforDrag(d1);
+        brade = new Brade(d1);
         brade.print();
         Kung kung = new Kung(brade, "e1");
         List<Drag> mojligaDrag = kung.getMojligaDrag();

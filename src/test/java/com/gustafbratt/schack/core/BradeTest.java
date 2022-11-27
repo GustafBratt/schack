@@ -15,20 +15,21 @@ public class BradeTest {
     }
 
     @Test
-    public void flippa() throws UtanforBradetException {
+    public void flippa() {
         Brade brade = new Brade(TOMT);
         brade.setPjas("a1", 'B');
         brade.setPjas("a8", 'k');
         brade.print();
-        brade = brade.klonaOchFlippa();
-        brade.print();
-        var p = brade.charPa("a1");
+        Brade b2 = new Brade(TOMT);
+        b2.klonaOchFlippa(brade);
+        b2.print();
+        var p = b2.charPa("a1");
         System.out.println("Pjäs på a1: " + p);
         assertThat(p).isEqualTo('b');
     }
 
     @Test
-    public void flippa2() throws UtanforBradetException {
+    public void flippa2() {
         Brade brade = new Brade(TOMT);
         brade.setPjas("b7", 'K'); // g2
         brade.setPjas("b2", 'b'); // g7
@@ -58,10 +59,10 @@ public class BradeTest {
         System.out.println("== SLUT START =");
         int startPoang = b.poang();
         assertThat(startPoang).isEqualTo(0);
-        b = b.utforDrag(new Drag(b, "e2", "e3"));
+        b = new Brade(new Drag(b, "e2", "e3"));
         b.print();
         assertThat(b.poang()).isGreaterThan(0);
-        b = b.utforDrag(new Drag(b, "e7", "e5"));
+        b = new Brade(new Drag(b, "e7", "e5"));
         b.print();
         assertThat(b.poang()).isLessThan(0);
     }
@@ -141,24 +142,24 @@ public class BradeTest {
     public void vitKungFlyttad() throws UtanforBradetException {
         Brade b = new Brade(BONDER_DAM_KUNG);
         b.print();
-        assertThat(b.aktuellKungHarFlyttatPaSig()).isFalse();
+        assertThat(b.isVitKungFlyttad()).isFalse();
 
         Brade b2 = new Drag(b, "e1", "f1").utfor(); //Flytta vit kung
         b2.print();
-        assertThat(b.aktuellKungHarFlyttatPaSig()).isFalse();
-        assertThat(b2.aktuellKungHarFlyttatPaSig()).isFalse();
+        assertThat(b.isVitKungFlyttad()).isFalse();
+        assertThat(b2.isSvartKungFlyttad()).isFalse();
 
         Brade b3 = new Drag(b2, "e8", "f8").utfor(); //Flytta svart kung
         b3.print();
-        assertThat(b3.aktuellKungHarFlyttatPaSig()).isTrue(); //vit aktuell
+        assertThat(b3.isVitKungFlyttad()).isTrue(); //vit aktuell
 
         Brade b4 = new Drag(b3, "f1", "e1").utfor(); //Flytta tillbaka vit kung
         b4.print();
-        assertThat(b4.aktuellKungHarFlyttatPaSig()).isTrue(); //Svart aktuell
+        assertThat(b4.isSvartKungFlyttad()).isTrue(); //Svart aktuell
 
         Brade b5 = new Drag(b4, "f8", "e8").utfor(); //Flytta tillbaka svart kung
         b5.print();
-        assertThat(b5.aktuellKungHarFlyttatPaSig()).isTrue(); //Vit aktuell
+        assertThat(b5.isVitKungFlyttad()).isTrue(); //Vit aktuell
 
     }
 }

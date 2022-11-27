@@ -45,7 +45,7 @@ class BondeTest {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
         var drag = new Drag(brade, "a2", "a3");
-        brade = brade.utforDrag(drag);
+        brade = new Brade(drag);
         brade.print();
         Bonde bonde = new Bonde(brade, "g7");
         List<Drag> mojligaDrag = bonde.getMojligaDrag();
@@ -55,7 +55,7 @@ class BondeTest {
     }
 
 
-    private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) throws UtanforBradetException {
+    private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.setPjas(extraPjasPos, extraPjasTyp);
         brade.print();

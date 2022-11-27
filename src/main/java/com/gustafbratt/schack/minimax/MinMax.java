@@ -30,7 +30,7 @@ public class MinMax {
         if (maximizingPlayer) { //vit
             value = Integer.MIN_VALUE;
             for (Drag drag : allaMojligaDrag) {
-                Brade child = node.utforDrag(drag);
+                Brade child = new Brade(drag);
                 DragPoang dp = minimax(child, depth - 1, false, alpha, beta);
                 if (value <= dp.getPoang()) {
                     value = dp.getPoang();
@@ -46,7 +46,7 @@ public class MinMax {
                 if (startDjup == depth) {
                     System.out.print(drag + " ");
                 }
-                Brade child = node.utforDrag(drag);
+                Brade child = new Brade(drag);
                 DragPoang dp = minimax(child, depth - 1, true, alpha, beta);
                 if (value >= dp.getPoang()) {
                     value = dp.getPoang();

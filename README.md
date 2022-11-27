@@ -5,7 +5,7 @@
 - [x] Torn
 - [x] Springare (häst)
 - [x] löpare
-- [ ] Rockad - simpel
+- [x] Rockad - simpel
 - [ ] Patt
 - [ ] Rockad - kungen får inte stå i schack
 - [ ] Promovering

@@ -22,7 +22,7 @@ class SpringareTest {
             System.out.println(drag);
             assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sb1-c3", "Sb1-a3");
             drag.sort(Comparator.comparing(Object::toString));
-            b = b.utforDrag(drag.get(1));
+            b = new Brade(drag.get(1));
         }
         {
             b.print();
@@ -31,7 +31,7 @@ class SpringareTest {
             System.out.println(drag);
             assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sb8-c6", "Sb8-a6");
             drag.sort(Comparator.comparing(Object::toString));
-            b = b.utforDrag(drag.get(1));
+            b = new Brade(drag.get(1));
         }
         {
             b.print();
@@ -40,7 +40,7 @@ class SpringareTest {
             System.out.println(drag);
             assertThat(drag.stream().map(Drag::toString)).containsExactlyInAnyOrder("Sc3-d5", "Sc3-b5", "Sc3-b1", "Sc3-e4", "Sc3-a4");
             drag.sort(Comparator.comparing(Object::toString));
-            b = b.utforDrag(drag.get(1));
+            b = new Brade(drag.get(1));
         }
     }
 

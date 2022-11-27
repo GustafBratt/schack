@@ -40,7 +40,7 @@ class MinMaxTest {
             } else {
                 drag = minMax4.minimax(brade, 2, false, MIN_VALUE, MAX_VALUE).getDrag();
             }
-            brade = brade.utforDrag(drag);
+            brade = new Brade(drag);
             brade.print();
             poang = brade.poang();
         }

@@ -1,20 +1,36 @@
 package com.gustafbratt.schack.core;
 
-public class Drag {
-    char pjas;
-    final String start;
-    final String till;
-    final Brade brade;
+import com.gustafbratt.schack.core.pjas.Pjas;
 
-    public Drag(Brade brade, String start, String till) {
-        this.pjas = brade.charPa(start);
-        this.start = start;
+public class Drag {
+    final char pjas;
+    final String fran;
+    final String till;
+    final private Brade brade;
+    final RockadTyp rockadTyp;
+
+    public Drag(Brade brade, String fran, String till) {
+        this.pjas = brade.charPa(fran);
+        this.fran = fran;
         this.till = till;
         this.brade = brade;
+        rockadTyp = null;
     }
 
-    public Brade utfor(){
-        return brade.utforDrag(this);
+    public Drag(Brade brade, RockadTyp rockadTyp) {
+        this.brade = brade;
+        this.pjas = Pjas.CONST_KUNG;
+        this.rockadTyp = rockadTyp;
+        this.fran = rockadTyp.kungFran;
+        this.till = rockadTyp.kungTill;
+    }
+
+    public Brade getBrade() {
+        return brade;
+    }
+
+    public Brade utfor() {
+        return new Brade(this);
     }
 
     public String getTill() {
@@ -23,10 +39,18 @@ public class Drag {
 
     @Override
     public String toString() {
-        return "" + pjas + start + "-" + till;
+        if (rockadTyp == null)
+            return "" + pjas + fran + "-" + till;
+        return "" + pjas + fran + "-" + till + "R";
+
     }
 
-    public String getStart() {
-        return start;
+    public String getFran() {
+        return fran;
+    }
+
+    public char getPjas() {
+        return pjas;
     }
 }
+
