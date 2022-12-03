@@ -154,7 +154,8 @@ public class Brade {
     }
 
     public Brade(Drag drag) {
-        Brade gamla = drag.getBrade();
+        Brade gamla = drag.getBradeFran();
+        drag.setBradeTill(this);
         if (!Character.isUpperCase(gamla.charPa(drag.getFran()))) { //TODO: den här behövs nog inte. Men bra i dev/test
             throw new IllegalStateException("Inte en aktiv pjäs på " + drag.getFran() + ". Det är en " + gamla.charPa(drag.getFran()));
         }
@@ -199,6 +200,10 @@ public class Brade {
         aktuellFarg = gamla.aktuellFarg.andra();
         vitKungFlyttad = gamla.vitKungFlyttad;
         svartKungFlyttad = gamla.svartKungFlyttad;
+        tornA8Flyttad = gamla.tornA8Flyttad;
+        tornA1Flyttad = gamla.tornA1Flyttad;
+        tornH1Flyttad = gamla.tornH1Flyttad;
+        tornH8Flyttad = gamla.tornH8Flyttad;
     }
 
     public char bytSpelare(char c) {

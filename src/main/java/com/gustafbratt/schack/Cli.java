@@ -47,11 +47,8 @@ public class Cli {
                 brade = new Brade(d);
             } else {
                 System.out.println("startar minmax");
-                int startDjup = 4;
-                var resultat = new MinMax(startDjup).minimax(brade, startDjup, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
-                var beraknat = resultat.getDrag();
+                var beraknat = new MinMax().hittaBastaDrag(brade, Farg.SVART, 5);
                 System.out.println("minmax klar: " + beraknat);
-                System.out.println("Möjlig poäng: " + resultat.getPoang());
                 brade = new Brade(beraknat);
             }
         }
