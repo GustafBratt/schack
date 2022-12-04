@@ -54,6 +54,15 @@ class BondeTest {
         assertThat(mojligaDrag.stream().map(Drag::toString)).contains("Bg7-g6", "Bg7-g5");
     }
 
+    @Test
+    public void langtFram() {
+        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+        brade.setPjas("a8", 'B');
+        brade.setPjas("e8", 'B');
+        brade.setPjas("h8", 'B');
+        brade.print();
+        assertThat(brade.beraknaMojligaDrag()).isEmpty();
+    }
 
     private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);

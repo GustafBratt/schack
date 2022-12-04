@@ -15,7 +15,13 @@ public class Drag {
         this.fran = fran;
         this.till = till;
         this.bradeFran = bradeFran;
-        rockadTyp = null;
+        RockadTyp rockadSok = null;
+        for(RockadTyp typ : RockadTyp.values()) {
+            if(typ.kungFran.equals(fran) && typ.kungTill().equals(till) && bradeFran.charPa(fran) == 'K') {
+                rockadSok = typ;
+            }
+        }
+        rockadTyp = rockadSok;
     }
 
     public Drag(Brade bradeFran, RockadTyp rockadTyp) {

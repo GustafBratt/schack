@@ -188,6 +188,14 @@ public class Brade {
             case "h1" -> tornH1Flyttad = true;
             case "h8" -> tornH8Flyttad = true;
         }
+        switch (drag.getTill()) {
+            case "e1" -> vitKungFlyttad = true;
+            case "e8" -> svartKungFlyttad = true;
+            case "a1" -> tornA1Flyttad = true;
+            case "a8" -> tornA8Flyttad = true;
+            case "h1" -> tornH1Flyttad = true;
+            case "h8" -> tornH8Flyttad = true;
+        }
 
     }
 
@@ -285,7 +293,7 @@ public class Brade {
             case Pjas.CONST_TORN -> 6;
             case Pjas.CONST_SPRINGARE -> 5;
             case Pjas.CONST_LOPARE -> 4;
-            case Pjas.CONST_DAM -> 9;
+            case Pjas.CONST_DAM -> 15;
             default -> 0;
         };
     }
@@ -298,7 +306,9 @@ public class Brade {
         } else {
             rad--;
         }
-        return "" + kolumn + rad;
+        String nyPosition = "" + kolumn + rad;
+        PositionUtils.validera(nyPosition);
+        return nyPosition;
     }
 
     public String framforVanster(String position) throws UtanforBradetException {
