@@ -24,7 +24,7 @@ public class RockadTest {
 
         var dragSvart = b2.getPjas("e8").get().getMojligaDrag();
         System.out.println(dragSvart);
-        assertThat(dragSvart.stream().map(Drag::toString)).containsExactlyInAnyOrder("Ke8-f8", "Ke8-c8R");
+        assertThat(dragSvart.stream().map(Drag::toString)).containsExactlyInAnyOrder("Ke8-f8", "Ke8-g8R");
         Brade klar = dragSvart.get(1).utfor();
         klar.print();
         assertThat(klar.isVitKungFlyttad()).isTrue();

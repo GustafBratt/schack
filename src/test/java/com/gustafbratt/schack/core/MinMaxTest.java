@@ -22,6 +22,8 @@ class MinMaxTest {
         b.rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
         b.rutor[6] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
         b.rutor[7] = new char[]{'.', '.', '.', 'T', '.', '.', '.', '.'};
+        b.print();
+        System.out.println(b.beraknaMojligaDrag());
         var mm = new MinMax();
         var res = mm.minimax(b, 1, true, 0, 0);
         b.print();

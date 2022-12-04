@@ -42,8 +42,6 @@ public class Brade {
             return;
         }
         if (typ == BRADE_INIT_TYP.BONDER_DAM_KUNG) {
-            vitKungFlyttad = true;
-            svartKungFlyttad = true;
             rutor[0] = new char[]{'.', '.', '.', 'd', 'k', '.', '.', '.'};
             rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'};
             rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
@@ -102,7 +100,7 @@ public class Brade {
     }
 
     public void print() {
-        System.out.println("Antal drag genomförda: " + antalDrag);
+        System.out.println("Antal drag genomförda: " + antalDrag + " " + dragHistorik);
         if (aktuellFarg == VIT) {
             System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
             for (int i = 0; i < 8; i++) {

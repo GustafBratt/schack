@@ -78,7 +78,7 @@ public class BradeTest {
         assertThat(b.poang()).isEqualTo(2); //En poäng för existens, en poäng för rad.
         b.setPjas("a2", 'D');
         b.print();
-        assertThat(b.beraknaPoang()).isEqualTo(13); //2 + 9 + 2
+        assertThat(b.beraknaPoang()).isEqualTo(19); //2 + 15 + 2
     }
 
     @Test
@@ -112,21 +112,6 @@ public class BradeTest {
         assertThat(b.poang()).isGreaterThan(4_000);
     }
 
-
-    @Test
-    public void allaMojligaDrag() throws UtanforBradetException {
-        Brade b = new Brade(BONDER_DAM_KUNG);
-        b.print();
-        var d = b.beraknaMojligaDrag();
-        System.out.println(d);
-        assertThat(d).hasSize(20);
-        b = b.klonaOchFlippa();
-        b.print();
-        d = b.beraknaMojligaDrag();
-        System.out.println(d);
-        assertThat(d).hasSize(20);
-        assertThat(d.stream().map(Drag::toString)).contains("Bh7-h6");
-    }
 
     @Test
     public void flippa3() throws UtanforBradetException {
