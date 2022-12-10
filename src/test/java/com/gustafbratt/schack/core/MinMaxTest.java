@@ -45,6 +45,7 @@ class MinMaxTest {
                 drag = minMax2.minimax(brade, 2, false, MIN_VALUE, MAX_VALUE).getDrag();
             }
             brade = new Brade(drag);
+            System.out.println(drag);
             brade.print();
             poang = brade.poang();
         }

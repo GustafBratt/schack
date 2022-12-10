@@ -45,6 +45,7 @@ public class MinMax {
             }
             System.out.println("");
         }
+        System.out.println("value: " + value);
         return bastaDrag;
     }
 

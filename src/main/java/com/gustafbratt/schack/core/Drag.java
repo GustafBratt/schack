@@ -7,8 +7,9 @@ public class Drag {
     final String fran;
     final String till;
     final private Brade bradeFran;
-    private Brade bradeTill;
+    private Brade bradeTill; //Sätts vid utför()
     final RockadTyp rockadTyp;
+    private final char tagenPjas;
 
     public Drag(Brade bradeFran, String fran, String till) {
         this.pjas = bradeFran.charPa(fran);
@@ -22,6 +23,7 @@ public class Drag {
             }
         }
         rockadTyp = rockadSok;
+        tagenPjas = bradeFran.charPa(till);
     }
 
     public Drag(Brade bradeFran, RockadTyp rockadTyp) {
@@ -30,6 +32,7 @@ public class Drag {
         this.rockadTyp = rockadTyp;
         this.fran = rockadTyp.kungFran;
         this.till = rockadTyp.kungTill;
+        tagenPjas = '.';
     }
 
     public Brade getBradeFran() {
@@ -46,10 +49,16 @@ public class Drag {
 
     @Override
     public String toString() {
-        if (rockadTyp == null)
-            return "" + pjas + fran + "-" + till;
-        return "" + pjas + fran + "-" + till + "R";
+        if (rockadTyp != null) {
+            return "" + pjas + fran + "-" + till + "R";
+        }
+        if(tagenPjas != '.')
+            return "" + pjas + fran + "-" + till + "x" + Character.toUpperCase(tagenPjas);
+        return "" + pjas + fran + "-" + till;
+    }
 
+    public boolean tarAnnanPjas() {
+        return tagenPjas != '.';
     }
 
     public String getFran() {

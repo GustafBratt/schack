@@ -75,7 +75,9 @@ public class Brade {
             return;
         }
         if (typ == BRADE_INIT_TYP.TORN_MOT_KUNG) {
-            rutor[0] = new char[]{'.', '.', '.', '.', '.', 'k', '.', '.'};
+            svartKungFlyttad = true;
+            vitKungFlyttad = true;
+            rutor[0] = new char[]{'t', '.', '.', '.', '.', 'k', '.', '.'};
             rutor[1] = new char[]{'.', '.', '.', 's', 'l', '.', '.', '.'};
             rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
@@ -231,6 +233,41 @@ public class Brade {
 
     //Vit maximerar
     int beraknaPoang() {
+        List<Drag> aktuellMojligaDrag = beraknaMojligaDrag();
+        int antalDragAkutell = aktuellMojligaDrag.size();
+        long hotAktuell = aktuellMojligaDrag.stream().filter(Drag::tarAnnanPjas).count();
+
+        List<Drag> andraMojligaDrag = klonaOchFlippa().beraknaMojligaDrag();
+        int antalDragAndra = andraMojligaDrag.size();
+        long hotAndra = andraMojligaDrag.stream().filter(Drag::tarAnnanPjas).count();
+
+        int poang = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (Character.isUpperCase(rutor[i][j])) {
+                    poang += getVarde(rutor[i][j]);
+                }
+                if (Character.isLowerCase(rutor[i][j])) {
+                    poang -= getVarde(rutor[i][j]);
+                }
+
+            }
+        }
+        poang += antalDragAkutell + hotAktuell;
+        poang -= antalDragAndra + hotAndra;
+        if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
+            poang = 5_000 - antalDrag;
+        }
+        if (poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
+            poang = -5_000 + antalDrag;
+        }
+        if (aktuellFarg == VIT)
+            return poang;
+        return -poang;
+    }
+
+    //Poäng för att ha pjäser + att ha dom långt fram.
+    int beraknaPoangGammal() {
         int poang = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -360,7 +397,7 @@ public class Brade {
         return svartKungFlyttad;
     }
 
-    @Deprecated //Vad fan ska man använda då?
+
     public Brade klonaOchFlippa() {
         Brade b2 = new Brade(BRADE_INIT_TYP.TOMT);
         b2.klonaOchFlippa(this);
