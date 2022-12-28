@@ -14,9 +14,10 @@
 
 ### Optimering
 - [x] Alpha-beta prune
-- [ ] Paralellisering
-- [ ] Iterative deepening
-- [ ] Profilering
+- [x] Paralellisering
+- [x] Iterative deepening
+- [x] Profilering
+- [ ] Profilering igen
 - [x] Förbättrad poang() som föredrar mitten. I början är det värt att offra bönder för att ta område.
 - [ ] Lista på kända öppningar etc
 - [ ] Gui

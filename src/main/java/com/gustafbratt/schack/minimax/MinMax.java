@@ -6,12 +6,12 @@ import com.gustafbratt.schack.core.Farg;
 
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class MinMax {
 
-    public Drag hittaBastaDrag(Brade brade, Farg farg, int djup) {
+    public static Drag hittaBastaDrag(Brade brade, Farg farg, int djup) {
+        System.out.println("Börjar söka på djup " + djup);
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
         List<Drag> allaMojligaDrag = brade.beraknaMojligaDrag();
@@ -45,11 +45,14 @@ public class MinMax {
             }
             System.out.println("");
         }
-        System.out.println("value: " + value);
+        System.out.println("Klar med djup " + djup + " value: " + value);
         return bastaDrag;
     }
 
-    public DragPoang minimax(Brade node, int depth, boolean maximizingPlayer, int alpha, int beta) {
+    public static DragPoang minimax(Brade node, int depth, boolean maximizingPlayer, int alpha, int beta) {
+        if (Thread.currentThread().isInterrupted()) {
+            throw new RuntimeException();
+        }
         if (depth == 0) {
             return new DragPoang(null, node.poang());
         }

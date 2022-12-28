@@ -6,6 +6,7 @@ import com.gustafbratt.schack.core.Farg;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import com.gustafbratt.schack.core.pjas.Pjas;
 import com.gustafbratt.schack.core.pjas.PositionUtils;
+import com.gustafbratt.schack.minimax.IterativeDeepening;
 import com.gustafbratt.schack.minimax.MinMax;
 
 import java.util.List;
@@ -47,7 +48,8 @@ public class Cli {
                 brade = new Brade(d);
             } else {
                 System.out.println("startar minmax");
-                var beraknat = new MinMax().hittaBastaDrag(brade, Farg.SVART, 5);
+                //var beraknat = new MinMax().hittaBastaDrag(brade, Farg.SVART, 5);
+                var beraknat = IterativeDeepening.hittaBastaDrag(brade, Farg.SVART, 10);
                 System.out.println("minmax klar: " + beraknat);
                 brade = new Brade(beraknat);
             }
