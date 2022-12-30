@@ -10,20 +10,30 @@ public class Drag {
     private Brade bradeTill; //Sätts vid utför()
     final RockadTyp rockadTyp;
     private final char tagenPjas;
+    private final boolean promovering;
+
 
     public Drag(Brade bradeFran, String fran, String till) {
-        this.pjas = bradeFran.charPa(fran);
         this.fran = fran;
         this.till = till;
         this.bradeFran = bradeFran;
         RockadTyp rockadSok = null;
-        for(RockadTyp typ : RockadTyp.values()) {
-            if(typ.kungFran.equals(fran) && typ.kungTill().equals(till) && bradeFran.charPa(fran) == 'K') {
+        for (RockadTyp typ : RockadTyp.values()) {
+            if (typ.kungFran.equals(fran) && typ.kungTill().equals(till) && bradeFran.charPa(fran) == 'K') {
                 rockadSok = typ;
             }
         }
         rockadTyp = rockadSok;
         tagenPjas = bradeFran.charPa(till);
+        int radFran = Integer.parseInt(fran.charAt(1) + "");
+        int radTill = Integer.parseInt(till.charAt(1) + "");
+        if (bradeFran.charPa(fran) == Pjas.CONST_BONDE && (radFran == 7 || radFran == 2) && (radTill == 8 || radTill == 1)) {
+            this.pjas = Pjas.CONST_DAM;
+            promovering = true;
+        } else {
+            this.pjas = bradeFran.charPa(fran);
+            promovering = false;
+        }
     }
 
     public Drag(Brade bradeFran, RockadTyp rockadTyp) {
@@ -33,6 +43,7 @@ public class Drag {
         this.fran = rockadTyp.kungFran;
         this.till = rockadTyp.kungTill;
         tagenPjas = '.';
+        promovering = false;
     }
 
     public Brade getBradeFran() {
@@ -52,9 +63,12 @@ public class Drag {
         if (rockadTyp != null) {
             return "" + pjas + fran + "-" + till + "R";
         }
-        if(tagenPjas != '.')
-            return "" + pjas + fran + "-" + till + "x" + Character.toUpperCase(tagenPjas);
-        return "" + pjas + fran + "-" + till;
+        String promSuffix = "";
+        if (promovering)
+            promSuffix = "=Q";
+        if (tagenPjas != '.')
+            return "" + pjas + fran + "-" + till + "x" + Character.toUpperCase(tagenPjas) + promSuffix;
+        return "" + pjas + fran + "-" + till + promSuffix;
     }
 
     public boolean tarAnnanPjas() {

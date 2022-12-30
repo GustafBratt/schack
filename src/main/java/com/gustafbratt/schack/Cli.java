@@ -49,7 +49,7 @@ public class Cli {
             } else {
                 System.out.println("startar minmax");
                 //var beraknat = new MinMax().hittaBastaDrag(brade, Farg.SVART, 5);
-                var beraknat = IterativeDeepening.hittaBastaDrag(brade, Farg.SVART, 10);
+                var beraknat = IterativeDeepening.hittaBastaDrag(brade, Farg.SVART, 20);
                 System.out.println("minmax klar: " + beraknat);
                 brade = new Brade(beraknat);
             }

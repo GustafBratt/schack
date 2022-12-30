@@ -161,4 +161,19 @@ public class BradeTest {
         assertThat(b5.isVitKungFlyttad()).isTrue(); //Vit aktuell
 
     }
+
+    @Test
+    public void promovering() {
+        Brade b = new Brade(TORN_MOT_KUNG);
+        b.setPjas("b7", 'B');
+        b.print();
+        var allaDrag = b.beraknaMojligaDrag();
+        System.out.println(allaDrag);
+        assertThat(allaDrag.stream().map(Drag::toString)).contains("Db7-b8=Q");
+        assertThat(allaDrag.stream().map(Drag::toString)).contains("Db7-a8xT=Q");
+        Drag d = new Drag(b, "b7", "a8");
+        b = d.utfor();
+        b.print();
+
+    }
 }

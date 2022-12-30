@@ -13,4 +13,5 @@ public class PositionUtils {
             throw new UtanforBradetException();
         }
     }
+
 }

@@ -8,7 +8,8 @@
 - [x] Rockad - simpel
 - [ ] Patt
 - [ ] Rockad - kungen får inte stå i schack
-- [ ] Promovering
+- [ ] Enkel promovering - bara dam
+- [ ] Promovering - till olika pjäser  
 - [ ] En passant
 - [ ] Schack (behövs den?)
 

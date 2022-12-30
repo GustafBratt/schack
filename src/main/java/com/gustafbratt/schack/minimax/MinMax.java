@@ -34,7 +34,7 @@ public class MinMax {
             value = Integer.MAX_VALUE;
             allaMojligaDrag.sort((o2, o1) -> o2.getBradeTill().poang() - o1.getBradeTill().poang());
             for (Drag drag : allaMojligaDrag) {
-                System.out.print(drag + " ");
+                System.out.print(djup + " ");
                 Brade child = new Brade(drag);
                 DragPoang dp = minimax(child, djup - 1, true, alpha, beta);
                 if (value >= dp.getPoang()) {

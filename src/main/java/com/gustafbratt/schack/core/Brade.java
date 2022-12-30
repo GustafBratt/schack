@@ -245,42 +245,16 @@ public class Brade {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (Character.isUpperCase(rutor[i][j])) {
-                    poang += getVarde(rutor[i][j]);
+                    poang += getVarde(rutor[i][j]) * 2;
                 }
                 if (Character.isLowerCase(rutor[i][j])) {
-                    poang -= getVarde(rutor[i][j]);
+                    poang -= getVarde(rutor[i][j]) * 2;
                 }
 
             }
         }
         poang += antalDragAkutell + hotAktuell;
         poang -= antalDragAndra + hotAndra;
-        if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
-            poang = 5_000 - antalDrag;
-        }
-        if (poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
-            poang = -5_000 + antalDrag;
-        }
-        if (aktuellFarg == VIT)
-            return poang;
-        return -poang;
-    }
-
-    //Poäng för att ha pjäser + att ha dom långt fram.
-    int beraknaPoangGammal() {
-        int poang = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (Character.isUpperCase(rutor[i][j])) {
-                    poang += 8 - i;
-                    poang += getVarde(rutor[i][j]);
-                }
-                if (Character.isLowerCase(rutor[i][j])) {
-                    poang -= i + 1;
-                    poang -= getVarde(rutor[i][j]);
-                }
-            }
-        }
         if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
             poang = 5_000 - antalDrag;
         }
