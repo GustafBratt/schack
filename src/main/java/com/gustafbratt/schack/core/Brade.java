@@ -9,10 +9,11 @@ import java.util.Optional;
 
 import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
+import static com.gustafbratt.schack.core.StartBraden.*;
 
 
 public class Brade {
-    final char[][] rutor = new char[8][8];
+    char[][] rutor;// = new char[8][0];
     private Optional<Integer> poang = Optional.empty(); //TODO nullable Integer istället?
     Farg aktuellFarg = VIT;
     private int antalDrag = 0;
@@ -26,103 +27,12 @@ public class Brade {
     private boolean tornH8Flyttad = false;
     private Character enPassantKolumn;
 
-    public Brade(BRADE_INIT_TYP typ) {
-        if (typ == BRADE_INIT_TYP.INGEN_INIT) {
-            return;
-        }
-        if (typ == BRADE_INIT_TYP.TOMT) {
+    public Brade(StartBraden typ) {
+        rutor = typ.skapaRutor();
+        if (typ != START && typ != BONDER_DAM_KUNG_TORN && typ != TIME_FOR_ROCKAD) {
             vitKungFlyttad = true;
             svartKungFlyttad = true;
-            rutor[0] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[1] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[7] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            return;
         }
-        if (typ == BRADE_INIT_TYP.BONDER_DAM_KUNG) {
-            rutor[0] = new char[]{'.', '.', '.', 'd', 'k', '.', '.', '.'};
-            rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'};
-            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'};
-            rutor[7] = new char[]{'.', '.', '.', 'D', 'K', '.', '.', '.'};
-            return;
-        }
-        if (typ == BRADE_INIT_TYP.TIME_FOR_ROCKAD) {
-            rutor[0] = new char[]{'t', '.', '.', 'd', 'k', '.', '.', 't'};
-            rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'};
-            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'};
-            rutor[7] = new char[]{'T', '.', '.', 'D', 'K', '.', '.', 'T'};
-            return;
-        }
-        if (typ == BRADE_INIT_TYP.BONDER_DAM_KUNG_TORN) {
-            rutor[0] = new char[]{'t', '.', '.', 'd', 'k', '.', '.', 't'};
-            rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'};
-            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'};
-            rutor[7] = new char[]{'T', '.', '.', 'D', 'K', '.', '.', 'T'};
-            return;
-        }
-        if (typ == BRADE_INIT_TYP.TORN_MOT_KUNG) {
-            svartKungFlyttad = true;
-            vitKungFlyttad = true;
-            rutor[0] = new char[]{'t', '.', '.', '.', '.', 'k', '.', '.'};
-            rutor[1] = new char[]{'.', '.', '.', 's', 'l', '.', '.', '.'};
-            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            rutor[6] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
-            rutor[7] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
-            return;
-        }
-        rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart
-        rutor[1] = new char[]{'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'}; //2
-        rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //3
-        rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //4
-        rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //5
-        rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //6
-        rutor[6] = new char[]{'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}; //7
-        rutor[7] = new char[]{'T', 'S', 'L', 'D', 'K', 'L', 'S', 'T'}; //8  Vit
-    }
-
-    public List<Drag> getDraghistorik() {
-        return Collections.unmodifiableList(dragHistorik);
-    }
-
-    public char charPa(String position) {
-        int kolumnRaw = position.charAt(0) - 'a';
-        int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
-        if (aktuellFarg == VIT) {
-            radRaw = 7 - radRaw;
-        } else {
-            kolumnRaw = 7 - kolumnRaw;
-        }
-        return rutor[radRaw][kolumnRaw];
-    }
-
-    public void setPjas(String position, char c) {
-        int kolumnRaw = position.charAt(0) - 'a';
-        int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
-        if (aktuellFarg == VIT) {
-            radRaw = 7 - radRaw;
-        } else {
-            kolumnRaw = 7 - kolumnRaw;
-        }
-        rutor[radRaw][kolumnRaw] = c;
     }
 
     public Brade(Drag drag) {
@@ -152,6 +62,33 @@ public class Brade {
         uppdateraRockadPjaser(drag);
         uppdateraEnPassant(drag);
     }
+
+    public List<Drag> getDraghistorik() {
+        return Collections.unmodifiableList(dragHistorik);
+    }
+
+    public char charPa(String position) {
+        int kolumnRaw = position.charAt(0) - 'a';
+        int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
+        if (aktuellFarg == VIT) {
+            radRaw = 7 - radRaw;
+        } else {
+            kolumnRaw = 7 - kolumnRaw;
+        }
+        return rutor[radRaw][kolumnRaw];
+    }
+
+    public void setPjas(String position, char c) {
+        int kolumnRaw = position.charAt(0) - 'a';
+        int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
+        if (aktuellFarg == VIT) {
+            radRaw = 7 - radRaw;
+        } else {
+            kolumnRaw = 7 - kolumnRaw;
+        }
+        rutor[radRaw][kolumnRaw] = c;
+    }
+
 
     private void uppdateraEnPassant(Drag drag) {
         if (drag.getPjas() == Pjas.CONST_BONDE) {
@@ -192,6 +129,7 @@ public class Brade {
     }
 
     void klonaOchFlippa(Brade gamla) {
+        rutor = new char[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 rutor[i][j] = bytSpelare(gamla.rutor[7 - i][7 - j]);
@@ -365,7 +303,7 @@ public class Brade {
 
 
     public Brade klonaOchFlippa() {
-        Brade b2 = new Brade(BRADE_INIT_TYP.TOMT);
+        Brade b2 = new Brade(TOMT);
         b2.klonaOchFlippa(this);
         return b2;
     }
@@ -415,15 +353,5 @@ public class Brade {
             throw new OgiltigtDragException();
         }
         return drag.get();
-    }
-
-    public enum BRADE_INIT_TYP {
-        TOMT,
-        START,
-        BONDER_DAM_KUNG,
-        BONDER_DAM_KUNG_TORN,
-        TORN_MOT_KUNG,
-        TIME_FOR_ROCKAD,
-        INGEN_INIT,
     }
 }

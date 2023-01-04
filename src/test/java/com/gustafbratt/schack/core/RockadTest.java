@@ -5,7 +5,7 @@ import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import com.gustafbratt.schack.core.pjas.Pjas;
 import org.junit.jupiter.api.Test;
 
-import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.TIME_FOR_ROCKAD;
+import static com.gustafbratt.schack.core.StartBraden.TIME_FOR_ROCKAD;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RockadTest {

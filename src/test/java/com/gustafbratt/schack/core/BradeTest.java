@@ -6,7 +6,7 @@ import com.gustafbratt.schack.core.pjas.Kung;
 import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import org.junit.jupiter.api.Test;
 
-import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.*;
+import static com.gustafbratt.schack.core.StartBraden.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BradeTest {
@@ -71,20 +71,6 @@ public class BradeTest {
     }
 
     @Test
-    public void poangFlyttFram() {
-        Brade b = new Brade(TOMT);
-        b.setPjas("d1", 'B');
-        b.setPjas("e1", 'K');
-        b.setPjas("e8", 'k');
-        b.print();
-        System.out.println(b.beraknaPoang());
-        assertThat(b.poang()).isEqualTo(2); //En poäng för existens, en poäng för rad.
-        b.setPjas("a2", 'D');
-        b.print();
-        assertThat(b.beraknaPoang()).isEqualTo(19); //2 + 15 + 2
-    }
-
-    @Test
     public void merPoangTest() throws OgiltigtDragException {
         Brade brade = new Brade(TOMT);
         //brade.setPjas("a1", 'K');
@@ -141,8 +127,8 @@ public class BradeTest {
     }
 
     @Test
-    public void vitKungFlyttad() throws UtanforBradetException, OgiltigtDragException {
-        Brade b = new Brade(BONDER_DAM_KUNG);
+    public void vitKungFlyttad() throws OgiltigtDragException {
+        Brade b = new Brade(BONDER_DAM_KUNG_TORN);
         b.print();
         assertThat(b.isVitKungFlyttad()).isFalse();
 

@@ -1,6 +1,7 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.StartBraden;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TornTest {
     @Test
     public void test1() throws UtanforBradetException {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.BONDER_DAM_KUNG_TORN);
+        Brade b = new Brade(StartBraden.BONDER_DAM_KUNG_TORN);
         b.print();
         Pjas torn1 = b.getPjas("a1").get();
         var drag1 = torn1.getMojligaDrag();

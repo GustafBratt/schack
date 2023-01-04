@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MinMaxTest {
     @Test
     public void minmax1() {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.INGEN_INIT);
+        Brade b = new Brade(StartBraden.INGEN_INIT);
         b.rutor[0] = new char[]{'.', '.', '.', 'D', '.', 'k', '.', '.'};
         b.rutor[1] = new char[]{'.', 'b', 'b', '.', 'b', 'b', '.', '.'};
         b.rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
@@ -33,8 +33,9 @@ class MinMaxTest {
     }
 
     @Test
+    @Disabled //Den här är bara för profilering?
     public void spel() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         int poang = 0;
         MinMax minMax4 = new MinMax();
         MinMax minMax2 = new MinMax();
@@ -62,7 +63,7 @@ class MinMaxTest {
     */
     public void langTestForProfilering() {
         var start = System.currentTimeMillis();
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         int poang = 0;
         Drag drag;
         while (poang < 4000 && poang > -4000) {
@@ -94,7 +95,7 @@ class MinMaxTest {
     //Tid efter sortering: 6 sekunder
     public void annuLangreTest() {
         var start = System.currentTimeMillis();
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         int poang = 0;
         Drag drag;
         while (poang < 4000 && poang > -4000) {

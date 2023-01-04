@@ -1,6 +1,7 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.StartBraden;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class DamTest {
 
     @Test
     void start() throws UtanforBradetException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.print();
         Dam dam = new Dam(brade, "d1");
         List<Drag> actual = dam.getMojligaDrag();
@@ -22,8 +23,8 @@ class DamTest {
     }
 
     @Test
-    void helaBradet() throws UtanforBradetException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+    void helaBradet() {
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("d1", CONST_DAM);
         brade.print();
         Dam dam = new Dam(brade, "d1");
@@ -33,8 +34,8 @@ class DamTest {
     }
 
     @Test
-    void mitten() throws UtanforBradetException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+    void mitten() {
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("d4", CONST_DAM);
         brade.print();
         Dam dam = new Dam(brade, "d4");
@@ -44,8 +45,8 @@ class DamTest {
     }
 
     @Test
-    void mittenMedPjaser() throws UtanforBradetException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+    void mittenMedPjaser() {
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas("d4", CONST_DAM);
         brade.print();
         Dam dam = new Dam(brade, "d4");
@@ -56,8 +57,8 @@ class DamTest {
     }
 
     @Test
-    void motstandareTorn() throws UtanforBradetException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+    void motstandareTorn() {
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas("h8", CONST_DAM);
         brade.print();
         Dam dam = new Dam(brade, "h8");

@@ -1,6 +1,7 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.StartBraden;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +13,7 @@ class KungTest {
 
     @Test
     void start() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.print();
         Kung kung = new Kung(brade, "e1");
         assertThat(kung.getMojligaDrag()).hasSize(0);
@@ -20,7 +21,7 @@ class KungTest {
 
     @Test
     void mitten() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas("d4", CONST_KUNG);
         brade.print();
         Kung kung = new Kung(brade, "d4");
@@ -32,7 +33,7 @@ class KungTest {
 
     @Test
     void vidMotstandare() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas("d6", CONST_KUNG);
         brade.print();
         Kung kung = new Kung(brade, "d6");
@@ -43,7 +44,7 @@ class KungTest {
 
     @Test
     void vidEgna() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas("d3", CONST_KUNG);
         brade.print();
         Kung kung = new Kung(brade, "d3");
@@ -54,7 +55,7 @@ class KungTest {
 
     @Test
     void a1Hornet() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("a1", CONST_KUNG);
         brade.print();
         Kung kung = new Kung(brade, "a1");
@@ -65,7 +66,7 @@ class KungTest {
 
     @Test
     void h8Hornet() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("h8", CONST_KUNG);
         brade.print();
         Kung kung = new Kung(brade, "h8");
@@ -78,7 +79,7 @@ class KungTest {
 
     @Test
     void mangaDrag() throws OgiltigtDragException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("d7", 'B');
         brade.setPjas("b2", 'b');
         brade.setPjas("e1", 'k');
@@ -95,7 +96,7 @@ class KungTest {
 
     @Test
     public void wtfTest() throws OgiltigtDragException {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade b = new Brade(StartBraden.START);
         b = b.hittaDrag( "a2", "a3").utfor(); //Vit
         b = b.hittaDrag( "h7", "h6").utfor(); //Svart
         b = b.hittaDrag( "b2", "b3").utfor(); //Vit
@@ -114,7 +115,7 @@ class KungTest {
 
     @Test
     public void wtfTest2() throws OgiltigtDragException {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade b = new Brade(StartBraden.START);
         b = b.hittaDrag( "a2", "a3").utfor(); //Vit
         b = b.hittaDrag( "h7", "h6").utfor(); //Svart
         b = b.hittaDrag( "b2", "b3").utfor(); //Vit

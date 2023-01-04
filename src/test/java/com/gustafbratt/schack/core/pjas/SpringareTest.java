@@ -1,6 +1,7 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.StartBraden;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ class SpringareTest {
 
     @Test
     public void test1() throws UtanforBradetException {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade b = new Brade(StartBraden.START);
         b.print();
 
         {
@@ -45,7 +46,7 @@ class SpringareTest {
 
     @Test
     public void test2() throws UtanforBradetException {
-        Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade b = new Brade(StartBraden.START);
         b.setPjas("d3", 'S');
         b.print();
         var spring = b.getPjas("d3").get();

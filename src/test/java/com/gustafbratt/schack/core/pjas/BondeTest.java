@@ -1,23 +1,24 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
+import com.gustafbratt.schack.core.StartBraden;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.TORN_MOT_KUNG;
+import static com.gustafbratt.schack.core.StartBraden.TORN_MOT_KUNG;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BondeTest {
     @Test
-    void hogerKant() throws UtanforBradetException {
+    void hogerKant() {
         List<Drag> mojligaDrag = skapaBrade("h2", "g3", 'l');
         assertThat(mojligaDrag).hasSize(3);
     }
 
     @Test
-    void lopareFramfor() throws UtanforBradetException {
+    void lopareFramfor() {
         List<Drag> mojligaDrag = skapaBrade("g2", "g3", 'l');
         assertThat(mojligaDrag).hasSize(0);
     }
@@ -42,7 +43,7 @@ class BondeTest {
 
     @Test
     void hogerKantSvart() throws OgiltigtDragException {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.print();
         var drag = brade.hittaDrag("a2", "a3");
         brade = new Brade(drag);
@@ -56,7 +57,7 @@ class BondeTest {
 
     @Test
     public void langtFram() {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
+        Brade brade = new Brade(StartBraden.TOMT);
         brade.setPjas("a8", 'B');
         brade.setPjas("e8", 'B');
         brade.setPjas("h8", 'B');
@@ -119,7 +120,7 @@ class BondeTest {
 
 
     private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) {
-        Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
+        Brade brade = new Brade(StartBraden.START);
         brade.setPjas(extraPjasPos, extraPjasTyp);
         brade.print();
         Bonde bonde = new Bonde(brade, bondePos);
