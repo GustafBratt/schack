@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
 
 
@@ -23,6 +24,7 @@ public class Brade {
     private boolean tornA8Flyttad = false;
     private boolean tornH1Flyttad = false;
     private boolean tornH8Flyttad = false;
+    private Character enPassantKolumn;
 
     public Brade(BRADE_INIT_TYP typ) {
         if (typ == BRADE_INIT_TYP.INGEN_INIT) {
@@ -101,36 +103,6 @@ public class Brade {
         return Collections.unmodifiableList(dragHistorik);
     }
 
-    public void print() {
-        System.out.println("Antal drag genomförda: " + antalDrag + " " + dragHistorik);
-        if (aktuellFarg == VIT) {
-            System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
-            for (int i = 0; i < 8; i++) {
-                //System.out.print(i + 1 + "|");
-                System.out.print(8 - i + "|");
-                for (int j = 0; j < 8; j++) {
-                    System.out.print(rutor[i][j]);
-                    System.out.print(" ");
-                }
-                System.out.println();
-            }
-            System.out.println("  a b c d e f g h");
-            return;
-        }
-        System.out.println("  h g f e d c b a  " + aktuellFarg + "s drag Poäng: " + poang());
-        for (int i = 0; i < 8; i++) {
-            //System.out.print(8 - i + "|");
-            System.out.print(i + 1 + "|");
-            for (int j = 0; j < 8; j++) {
-                System.out.print(rutor[i][j]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-        System.out.println("  h g f e d c b a");
-
-    }
-
     public char charPa(String position) {
         int kolumnRaw = position.charAt(0) - 'a';
         int radRaw = Integer.parseInt(position.charAt(1) + "") - 1;
@@ -163,13 +135,33 @@ public class Brade {
         antalDrag = gamla.antalDrag + 1;
         dragHistorik.addAll(gamla.dragHistorik);
         dragHistorik.add(drag);
-        if (drag.rockadTyp != null) {
-            utforRockad(drag.rockadTyp);
+        if (drag.getRockadTyp() != null) {
+            utforRockad(drag.getRockadTyp());
         } else {
             setPjas(drag.getTill(), Character.toLowerCase(drag.getPjas()));
             setPjas(drag.getFran(), '.');
         }
+        if (drag.getDragTyp() == DragTyp.ENPASSANT) {
+
+            if (aktuellFarg == SVART) {
+                setPjas("" + gamla.enPassantKolumn + "5", '.');
+            } else {
+                setPjas("" + gamla.enPassantKolumn + "4", '.');
+            }
+        }
         uppdateraRockadPjaser(drag);
+        uppdateraEnPassant(drag);
+    }
+
+    private void uppdateraEnPassant(Drag drag) {
+        if (drag.getPjas() == Pjas.CONST_BONDE) {
+            if (PositionUtils.getRadRaw(drag.getFran()) == 1 && PositionUtils.getRadRaw(drag.getTill()) == 3) {
+                enPassantKolumn = drag.getFran().charAt(0);
+            }
+            if (PositionUtils.getRadRaw(drag.getFran()) == 6 && PositionUtils.getRadRaw(drag.getTill()) == 4) {
+                enPassantKolumn = drag.getFran().charAt(0);
+            }
+        }
     }
 
     private void utforRockad(RockadTyp rockadTyp) {
@@ -245,10 +237,10 @@ public class Brade {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (Character.isUpperCase(rutor[i][j])) {
-                    poang += getVarde(rutor[i][j]) * 2;
+                    poang += getVarde(rutor[i][j]) * 5;
                 }
                 if (Character.isLowerCase(rutor[i][j])) {
-                    poang -= getVarde(rutor[i][j]) * 2;
+                    poang -= getVarde(rutor[i][j]) * 5;
                 }
 
             }
@@ -320,7 +312,7 @@ public class Brade {
         return nyPosition;
     }
 
-    public String framforVanster(String position) throws UtanforBradetException {
+    public String framforVanster(String position) {
         int rad = Integer.parseInt(position.charAt(1) + "");
         char kolumn = position.charAt(0);
         if (aktuellFarg == VIT) {
@@ -333,7 +325,7 @@ public class Brade {
         return "" + kolumn + rad;
     }
 
-    public String framforHoger(String position) throws UtanforBradetException {
+    public String framforHoger(String position) {
         int rad = Integer.parseInt(position.charAt(1) + "");
         char kolumn = position.charAt(0);
         if (aktuellFarg == VIT) {
@@ -376,6 +368,53 @@ public class Brade {
         Brade b2 = new Brade(BRADE_INIT_TYP.TOMT);
         b2.klonaOchFlippa(this);
         return b2;
+    }
+
+    public Character getEnPassantKolumn() {
+        return enPassantKolumn;
+    }
+
+    public void print() {
+        System.out.println("Antal drag genomförda: " + antalDrag + " " + dragHistorik);
+        if (aktuellFarg == VIT) {
+            System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
+            for (int i = 0; i < 8; i++) {
+                //System.out.print(i + 1 + "|");
+                System.out.print(8 - i + "|");
+                for (int j = 0; j < 8; j++) {
+                    System.out.print(rutor[i][j]);
+                    System.out.print(" ");
+                }
+                System.out.println();
+            }
+            System.out.println("  a b c d e f g h");
+            return;
+        }
+        System.out.println("  h g f e d c b a  " + aktuellFarg + "s drag Poäng: " + poang());
+        for (int i = 0; i < 8; i++) {
+            //System.out.print(8 - i + "|");
+            System.out.print(i + 1 + "|");
+            for (int j = 0; j < 8; j++) {
+                System.out.print(rutor[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+        System.out.println("  h g f e d c b a");
+    }
+
+    public Drag hittaDrag(String fran, String till) throws OgiltigtDragException {
+        Optional<Pjas> pjasOptional = getPjas(fran);
+        if (pjasOptional.isEmpty()) {
+            throw new OgiltigtDragException();
+        }
+        Optional<Drag> drag = pjasOptional.get().getMojligaDrag().stream()
+                .filter(d -> d.getTill().equals(till))
+                .findFirst();
+        if (drag.isEmpty()) {
+            throw new OgiltigtDragException();
+        }
+        return drag.get();
     }
 
     public enum BRADE_INIT_TYP {

@@ -1,5 +1,7 @@
 package com.gustafbratt.schack.core;
 
+import com.gustafbratt.schack.core.pjas.Drag;
+import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import com.gustafbratt.schack.core.pjas.Pjas;
 import org.junit.jupiter.api.Test;
 
@@ -77,7 +79,7 @@ public class RockadTest {
     }
 
     @Test
-    public void svartLang() {
+    public void svartLang() throws OgiltigtDragException {
         String mojligaDrag;
         mojligaDrag = bradeMedPjasPaSvart("b3");
         System.out.println(mojligaDrag);
@@ -88,12 +90,12 @@ public class RockadTest {
         assertThat(mojligaDrag).doesNotContain("Ke8-c8R");
     }
 
-    private String bradeMedPjasPaSvart(String pos) {
+    private String bradeMedPjasPaSvart(String pos) throws OgiltigtDragException {
         Brade brade = new Brade(TIME_FOR_ROCKAD);
         brade.setPjas("d1", '.');
         brade.setPjas("d8", '.');
         brade.setPjas(pos, 'S');
-        brade = new Drag(brade, "g2", "g3").utfor();
+        brade = brade.hittaDrag( "g2", "g3").utfor();
         brade.print();
         return brade.getPjas("e8").get().getMojligaDrag().toString();
     }

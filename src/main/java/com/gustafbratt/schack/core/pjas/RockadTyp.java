@@ -1,4 +1,4 @@
-package com.gustafbratt.schack.core;
+package com.gustafbratt.schack.core.pjas;
 
 public enum RockadTyp {
     VIT_LANG("e1", "c1", "a1", "d1", new String[]{"b1", "c1", "d1"}),

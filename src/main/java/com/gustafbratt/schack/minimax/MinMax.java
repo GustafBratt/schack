@@ -1,7 +1,7 @@
 package com.gustafbratt.schack.minimax;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
+import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.Farg;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import static java.lang.Math.*;
 public class MinMax {
 
     public static Drag hittaBastaDrag(Brade brade, Farg farg, int djup) {
-        System.out.println("Börjar söka på djup " + djup);
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
         List<Drag> allaMojligaDrag = brade.beraknaMojligaDrag();
@@ -45,7 +44,7 @@ public class MinMax {
             }
             System.out.println("");
         }
-        System.out.println("Klar med djup " + djup + " value: " + value);
+        System.out.println("Klar med djup " + djup + " value: " + value + " drag: " + bastaDrag);
         return bastaDrag;
     }
 

@@ -1,28 +1,30 @@
 package com.gustafbratt.schack;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
+import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.Farg;
 import com.gustafbratt.schack.core.UtanforBradetException;
-import com.gustafbratt.schack.core.pjas.Pjas;
+import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import com.gustafbratt.schack.core.pjas.PositionUtils;
 import com.gustafbratt.schack.minimax.IterativeDeepening;
-import com.gustafbratt.schack.minimax.MinMax;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Cli {
 
     Scanner scanner = new Scanner(System.in);
     Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
 
-    public static void main(String[] args) throws UtanforBradetException {
+    public static void main(String[] args) throws OgiltigtDragException {
         new Cli().start();
     }
 
-    public void start() throws UtanforBradetException {
+    public void start() throws OgiltigtDragException {
         System.out.println("Nu kör vi");
+        int timeout = Integer.parseInt(inputPrompt("Välj timeout"));
         while (true) {
             if (brade.poang() > 3_000) {
                 brade.print();
@@ -36,28 +38,40 @@ public class Cli {
             }
             brade.print();
             if (brade.getAktuellFarg() == Farg.VIT) {
-                String start = valjPjas();
-                Pjas valdPjas = null;
-                if (brade.getPjas(start).isEmpty())
-                    continue;
-                valdPjas = brade.getPjas(start).get();
-                List<Drag> giltigaDrag = valdPjas.getMojligaDrag();
-                System.out.println("Giltiga drag: " + giltigaDrag);
-                String  till = valjTill(giltigaDrag);
-                Drag d = new Drag(brade, start, till);
+                Drag d = promtaOmDrag();
+                System.out.println("Valt drag: " + d);
                 brade = new Brade(d);
             } else {
                 System.out.println("startar minmax");
-                //var beraknat = new MinMax().hittaBastaDrag(brade, Farg.SVART, 5);
-                var beraknat = IterativeDeepening.hittaBastaDrag(brade, Farg.SVART, 20);
+                var beraknat = IterativeDeepening.hittaBastaDrag(brade, Farg.SVART, timeout);
                 System.out.println("minmax klar: " + beraknat);
                 brade = new Brade(beraknat);
             }
         }
     }
 
+    private Drag promtaOmDrag() {
+        String till = inputPrompt("Välj mål");
+        List<Drag> mojligaDrag = brade.beraknaMojligaDrag().stream().filter(d -> d.getTill().equals(till)).collect(Collectors.toList());
+        if(mojligaDrag.size() == 1) {
+            return mojligaDrag.get(0);
+        }
+        if(mojligaDrag.size() == 0) {
+            System.out.println("Det går inte att flytta till " + till);
+            return promtaOmDrag();
+        }
+        System.out.println("Det går att komma till " + till + " från " + mojligaDrag.stream().map(Drag::getFran).collect(Collectors.joining(", ")));
+        String fran = inputPrompt("Välj från: ");
+        Optional<Drag> drag = mojligaDrag.stream().filter(d -> d.getFran().equals(fran)).findFirst();
+        if(drag.isPresent()) {
+            return drag.get();
+        }
+        System.out.println("Nej, det går inget vidare. Vi börjar om.");
+        return promtaOmDrag();
+    }
+
     private String inputPrompt(String s) {
-        System.out.print(s + " >>");
+        System.out.print(s + " >> ");
         return scanner.nextLine();
     }
 

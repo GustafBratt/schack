@@ -1,7 +1,6 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 

@@ -1,11 +1,9 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gustafbratt.schack.core.pjas.Pjas.CONST_KUNG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,13 +77,13 @@ class KungTest {
     }
 
     @Test
-    void mangaDrag() {
+    void mangaDrag() throws OgiltigtDragException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.TOMT);
         brade.setPjas("d7", 'B');
         brade.setPjas("b2", 'b');
         brade.setPjas("e1", 'k');
         brade.print();
-        Drag d1 = new Drag(brade, "d7", "d5");
+        Drag d1 = brade.hittaDrag( "d7", "d8");
         brade = new Brade(d1);
         brade.print();
         Kung kung = new Kung(brade, "e1");
@@ -96,38 +94,38 @@ class KungTest {
     }
 
     @Test
-    public void wtfTest() {
+    public void wtfTest() throws OgiltigtDragException {
         Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
-        b = new Drag(b, "a2", "a3").utfor(); //Vit
-        b = new Drag(b, "h7", "h6").utfor(); //Svart
-        b = new Drag(b, "b2", "b3").utfor(); //Vit
-        b = new Drag(b, "g8", "f6").utfor(); //Svart
-        b = new Drag(b, "c2", "c3").utfor(); //Vit
-        b = new Drag(b, "e7", "e5").utfor(); //Svart
-        b = new Drag(b, "d2", "d3").utfor(); //Vit
-        b = new Drag(b, "f8", "d6").utfor(); //Svart
-        b = new Drag(b, "e2", "e3").utfor(); //Vit
-        b = new Drag(b, "h8", "h7").utfor();
-        b = new Drag(b, "f2", "f3").utfor();
+        b = b.hittaDrag( "a2", "a3").utfor(); //Vit
+        b = b.hittaDrag( "h7", "h6").utfor(); //Svart
+        b = b.hittaDrag( "b2", "b3").utfor(); //Vit
+        b = b.hittaDrag( "g8", "f6").utfor(); //Svart
+        b = b.hittaDrag( "c2", "c3").utfor(); //Vit
+        b = b.hittaDrag( "e7", "e5").utfor(); //Svart
+        b = b.hittaDrag( "d2", "d3").utfor(); //Vit
+        b = b.hittaDrag( "f8", "d6").utfor(); //Svart
+        b = b.hittaDrag( "e2", "e3").utfor(); //Vit
+        b = b.hittaDrag( "h8", "h7").utfor();
+        b = b.hittaDrag( "f2", "f3").utfor();
         b.print();
         var allaDrag = b.beraknaMojligaDrag();
         assertThat(allaDrag.stream().map(Drag::toString)).doesNotContain("Ke8-g8R");
     }
 
     @Test
-    public void wtfTest2() {
+    public void wtfTest2() throws OgiltigtDragException {
         Brade b = new Brade(Brade.BRADE_INIT_TYP.START);
-        b = new Drag(b, "a2", "a3").utfor(); //Vit
-        b = new Drag(b, "h7", "h6").utfor(); //Svart
-        b = new Drag(b, "b2", "b3").utfor(); //Vit
-        b = new Drag(b, "g8", "f6").utfor(); //Svart
-        b = new Drag(b, "c2", "c3").utfor(); //Vit
-        b = new Drag(b, "e7", "e5").utfor(); //Svart
-        b = new Drag(b, "d2", "d3").utfor(); //Vit
-        b = new Drag(b, "f8", "d6").utfor(); //Svart
-        b = new Drag(b, "e2", "e3").utfor(); //Vit
+        b = b.hittaDrag( "a2", "a3").utfor(); //Vit
+        b = b.hittaDrag( "h7", "h6").utfor(); //Svart
+        b = b.hittaDrag( "b2", "b3").utfor(); //Vit
+        b = b.hittaDrag( "g8", "f6").utfor(); //Svart
+        b = b.hittaDrag( "c2", "c3").utfor(); //Vit
+        b = b.hittaDrag( "e7", "e5").utfor(); //Svart
+        b = b.hittaDrag( "d2", "d3").utfor(); //Vit
+        b = b.hittaDrag( "f8", "d6").utfor(); //Svart
+        b = b.hittaDrag( "e2", "e3").utfor(); //Vit
         assertThat(b.beraknaMojligaDrag().stream().map(Drag::toString)).contains("Ke8-g8R");
-        b = new Drag(b, "e8", "g8").utfor();
+        b = b.hittaDrag( "e8", "g8").utfor();
         assertThat(b.charPa("f8")).isEqualTo('t');
     }
 

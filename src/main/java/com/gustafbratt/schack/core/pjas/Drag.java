@@ -1,6 +1,6 @@
-package com.gustafbratt.schack.core;
+package com.gustafbratt.schack.core.pjas;
 
-import com.gustafbratt.schack.core.pjas.Pjas;
+import com.gustafbratt.schack.core.Brade;
 
 public class Drag {
     final char pjas;
@@ -11,20 +11,20 @@ public class Drag {
     final RockadTyp rockadTyp;
     private final char tagenPjas;
     private final boolean promovering;
+    final DragTyp dragTyp;
 
-
-    public Drag(Brade bradeFran, String fran, String till) {
+    //TODO kolla om den här finns med i listan över giltiga drag?
+    Drag(Brade bradeFran, String fran, String till, DragTyp dragTyp) {
         this.fran = fran;
         this.till = till;
         this.bradeFran = bradeFran;
-        RockadTyp rockadSok = null;
-        for (RockadTyp typ : RockadTyp.values()) {
-            if (typ.kungFran.equals(fran) && typ.kungTill().equals(till) && bradeFran.charPa(fran) == 'K') {
-                rockadSok = typ;
-            }
+        this.dragTyp = dragTyp;
+        rockadTyp = null;
+        if(dragTyp == DragTyp.ENPASSANT) {
+            tagenPjas = 'b';
+        } else {
+            tagenPjas = bradeFran.charPa(till);
         }
-        rockadTyp = rockadSok;
-        tagenPjas = bradeFran.charPa(till);
         int radFran = Integer.parseInt(fran.charAt(1) + "");
         int radTill = Integer.parseInt(till.charAt(1) + "");
         if (bradeFran.charPa(fran) == Pjas.CONST_BONDE && (radFran == 7 || radFran == 2) && (radTill == 8 || radTill == 1)) {
@@ -36,7 +36,8 @@ public class Drag {
         }
     }
 
-    public Drag(Brade bradeFran, RockadTyp rockadTyp) {
+    //TODO: Den här behövs ju inte. All logik finns ju i vanliga konstruktorn
+    Drag(Brade bradeFran, RockadTyp rockadTyp) {
         this.bradeFran = bradeFran;
         this.pjas = Pjas.CONST_KUNG;
         this.rockadTyp = rockadTyp;
@@ -44,6 +45,11 @@ public class Drag {
         this.till = rockadTyp.kungTill;
         tagenPjas = '.';
         promovering = false;
+        dragTyp = DragTyp.ROCKAD;
+    }
+
+    public RockadTyp getRockadTyp() {
+        return rockadTyp;
     }
 
     public Brade getBradeFran() {
@@ -113,6 +119,10 @@ public class Drag {
         result = 31 * result + (bradeFran != null ? bradeFran.hashCode() : 0);
         result = 31 * result + (rockadTyp != null ? rockadTyp.hashCode() : 0);
         return result;
+    }
+
+    public DragTyp getDragTyp() {
+        return dragTyp;
     }
 }
 

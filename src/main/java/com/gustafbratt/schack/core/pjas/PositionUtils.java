@@ -14,4 +14,13 @@ public class PositionUtils {
         }
     }
 
+    public static int getRadRaw(String position) {
+        return Integer.parseInt(position.charAt(1) + "") - 1;
+    }
+
+    public static int getKolumnRaw(String position) {
+        return position.charAt(0) - 'a';
+    }
+
+
 }

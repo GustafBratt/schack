@@ -1,12 +1,12 @@
 package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.Drag;
 import com.gustafbratt.schack.core.UtanforBradetException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.TORN_MOT_KUNG;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BondeTest {
@@ -41,10 +41,10 @@ class BondeTest {
     }
 
     @Test
-    void hogerKantSvart() throws UtanforBradetException {
+    void hogerKantSvart() throws OgiltigtDragException {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);
         brade.print();
-        var drag = new Drag(brade, "a2", "a3");
+        var drag = brade.hittaDrag("a2", "a3");
         brade = new Brade(drag);
         brade.print();
         Bonde bonde = new Bonde(brade, "g7");
@@ -63,6 +63,60 @@ class BondeTest {
         brade.print();
         assertThat(brade.beraknaMojligaDrag()).isEmpty();
     }
+
+    @Test
+    public void enPassantSvart() throws OgiltigtDragException {
+        Brade brade = new Brade(TORN_MOT_KUNG);
+        brade.setPjas("c2", 'B');
+        brade.setPjas("d4", 'b');
+        brade.print();
+        var allaDrag = brade.beraknaMojligaDrag();
+        System.out.println(allaDrag);
+        Drag forstaBonden = brade.hittaDrag("c2", "c4");
+        brade = forstaBonden.utfor();
+        brade.print();
+        assertThat(brade.getEnPassantKolumn()).isEqualTo('c');
+        allaDrag = brade.beraknaMojligaDrag();
+        System.out.println(allaDrag);
+        Drag andraBonden = brade.hittaDrag("d4", "c3");
+        brade = andraBonden.utfor();
+        brade.print();
+        assertThat(brade.charPa("c4")).isEqualTo('.');
+        assertThat(brade.charPa("c3")).isEqualTo('b');
+    }
+
+    @Test
+    public void enPassantVIT() throws OgiltigtDragException {
+        Brade brade = new Brade(TORN_MOT_KUNG);
+        brade = brade.klonaOchFlippa();
+        brade.setPjas("c7", 'B');
+        brade.setPjas("d5", 'b');
+        brade.print();
+        brade = brade.hittaDrag("c7", "c5").utfor();
+        brade.print();
+        List<Drag> mojligaDrag = brade.beraknaMojligaDrag();
+        System.out.println(mojligaDrag);
+        brade = brade.hittaDrag("d5", "c6").utfor();
+        brade.print();
+        assertThat(brade.charPa("c5")).isEqualTo('.');
+        assertThat(brade.charPa("c6")).isEqualTo('b');
+    }
+
+    @Test
+    public void inteEnPassant() throws OgiltigtDragException {
+        Brade brade = new Brade(TORN_MOT_KUNG);
+        brade.setPjas("c2", 'B');
+        brade.setPjas("d4", 'b');
+        brade.print();
+        var allaDrag = brade.beraknaMojligaDrag();
+        System.out.println(allaDrag);
+        Drag forstaBonden = brade.hittaDrag("c2", "c3");
+        brade = forstaBonden.utfor();
+        brade.print();
+        assertThat(brade.getEnPassantKolumn()).isNull();
+
+    }
+
 
     private List<Drag> skapaBrade(String bondePos, String extraPjasPos, char extraPjasTyp) {
         Brade brade = new Brade(Brade.BRADE_INIT_TYP.START);

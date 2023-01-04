@@ -1,7 +1,9 @@
 package com.gustafbratt.schack.core;
 
+import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.pjas.Bonde;
 import com.gustafbratt.schack.core.pjas.Kung;
+import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import org.junit.jupiter.api.Test;
 
 import static com.gustafbratt.schack.core.Brade.BRADE_INIT_TYP.*;
@@ -52,23 +54,24 @@ public class BradeTest {
     }
 
     @Test
-    public void poang() throws UtanforBradetException {
+    public void poang() throws OgiltigtDragException {
         Brade b = new Brade(START);
         System.out.println("==== START ====");
         b.print();
         System.out.println("== SLUT START =");
         int startPoang = b.poang();
         assertThat(startPoang).isEqualTo(0);
-        b = new Brade(new Drag(b, "e2", "e3"));
+        b = b.hittaDrag("e2", "e3").utfor();
+        //b = new Brade(b.hittaDrag( "e2", "e3"));
         b.print();
         assertThat(b.poang()).isGreaterThan(0);
-        b = new Brade(new Drag(b, "e7", "e5"));
+        b = new Brade(b.hittaDrag( "e7", "e5"));
         b.print();
 //        assertThat(b.poang()).isLessThan(0);
     }
 
     @Test
-    public void poangFlyttFram() throws UtanforBradetException {
+    public void poangFlyttFram() {
         Brade b = new Brade(TOMT);
         b.setPjas("d1", 'B');
         b.setPjas("e1", 'K');
@@ -82,21 +85,21 @@ public class BradeTest {
     }
 
     @Test
-    public void merPoangTest() {
+    public void merPoangTest() throws OgiltigtDragException {
         Brade brade = new Brade(TOMT);
         //brade.setPjas("a1", 'K');
         brade.setPjas("h1", 'k');
         brade.setPjas("c4", 'D');
         brade.print();
         System.out.println(brade.poang());
-        var b2 = new Drag(brade, "c4", "c3").utfor();
+        var b2 = brade.hittaDrag( "c4", "c3").utfor();
         b2.print();
         System.out.println(b2.poang());
     }
 
 
     @Test
-    public void poangFlyttFram2() throws UtanforBradetException {
+    public void poangFlyttFram2() {
         Brade b = new Brade(TOMT);
         b.setPjas("d8", 'b');
         b.setPjas("e1", 'K');
@@ -107,7 +110,7 @@ public class BradeTest {
     }
 
     @Test
-    public void poang2() throws UtanforBradetException {
+    public void poang2() {
         Brade b = new Brade(TOMT);
         b.setPjas("d4", 'k'); //VITs drag. svart kung. INT_MIN
         b.setPjas("d3", 'b');
@@ -117,7 +120,7 @@ public class BradeTest {
     }
 
     @Test
-    public void poang3() throws UtanforBradetException {
+    public void poang3() {
         Brade b = new Brade(TOMT);
         b.setPjas("d4", 'K'); //SVARTs drag. svart kung. INT_MAX
         b.setPjas("d3", 'b');
@@ -128,7 +131,7 @@ public class BradeTest {
 
 
     @Test
-    public void flippa3() throws UtanforBradetException {
+    public void flippa3() {
         Brade b = new Brade(BONDER_DAM_KUNG);
         b.print();
         b = b.klonaOchFlippa();
@@ -138,32 +141,32 @@ public class BradeTest {
     }
 
     @Test
-    public void vitKungFlyttad() throws UtanforBradetException {
+    public void vitKungFlyttad() throws UtanforBradetException, OgiltigtDragException {
         Brade b = new Brade(BONDER_DAM_KUNG);
         b.print();
         assertThat(b.isVitKungFlyttad()).isFalse();
 
-        Brade b2 = new Drag(b, "e1", "f1").utfor(); //Flytta vit kung
+        Brade b2 = b.hittaDrag( "e1", "f1").utfor(); //Flytta vit kung
         b2.print();
         assertThat(b.isVitKungFlyttad()).isFalse();
         assertThat(b2.isSvartKungFlyttad()).isFalse();
 
-        Brade b3 = new Drag(b2, "e8", "f8").utfor(); //Flytta svart kung
+        Brade b3 = b2.hittaDrag( "e8", "f8").utfor(); //Flytta svart kung
         b3.print();
         assertThat(b3.isVitKungFlyttad()).isTrue(); //vit aktuell
 
-        Brade b4 = new Drag(b3, "f1", "e1").utfor(); //Flytta tillbaka vit kung
+        Brade b4 = b3.hittaDrag( "f1", "e1").utfor(); //Flytta tillbaka vit kung
         b4.print();
         assertThat(b4.isSvartKungFlyttad()).isTrue(); //Svart aktuell
 
-        Brade b5 = new Drag(b4, "f8", "e8").utfor(); //Flytta tillbaka svart kung
+        Brade b5 = b4.hittaDrag( "f8", "e8").utfor(); //Flytta tillbaka svart kung
         b5.print();
         assertThat(b5.isVitKungFlyttad()).isTrue(); //Vit aktuell
 
     }
 
     @Test
-    public void promovering() {
+    public void promovering() throws OgiltigtDragException {
         Brade b = new Brade(TORN_MOT_KUNG);
         b.setPjas("b7", 'B');
         b.print();
@@ -171,9 +174,9 @@ public class BradeTest {
         System.out.println(allaDrag);
         assertThat(allaDrag.stream().map(Drag::toString)).contains("Db7-b8=Q");
         assertThat(allaDrag.stream().map(Drag::toString)).contains("Db7-a8xT=Q");
-        Drag d = new Drag(b, "b7", "a8");
+        Drag d = b.hittaDrag( "b7", "a8");
         b = d.utfor();
         b.print();
-
     }
+
 }

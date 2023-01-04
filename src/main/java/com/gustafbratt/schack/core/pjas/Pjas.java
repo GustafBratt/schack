@@ -23,11 +23,6 @@ public abstract class Pjas {
         this.position = position;
     }
 
-    boolean ledigEllerMotstandare(String position) {
-        char pjas = brade.charPa(position);
-        return pjas == '.' || Character.isLowerCase(pjas);
-    }
-
     void skapaLinjeMedDrag(Riktning riktning) {
         String pekare = position;
         try {
@@ -42,8 +37,13 @@ public abstract class Pjas {
 
     void skapaDragOmLedigEllerMotstandare(String positionTill) throws UtanforBradetException {
         PositionUtils.validera(positionTill);
-        if (ledigEllerMotstandare(positionTill)) {
-            Drag drag = new Drag(brade, this.position, positionTill);
+        char pjas = brade.charPa(positionTill);
+        if (pjas == '.') {
+            Drag drag = new Drag(brade, this.position, positionTill, DragTyp.FLYTT);
+            mojligaDrag.add(drag);
+        }
+        if (Character.isLowerCase(pjas)) {
+            Drag drag = new Drag(brade, this.position, positionTill, DragTyp.FLYTT);
             mojligaDrag.add(drag);
         }
     }

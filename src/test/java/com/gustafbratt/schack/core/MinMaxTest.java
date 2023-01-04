@@ -1,5 +1,6 @@
 package com.gustafbratt.schack.core;
 
+import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.minimax.MinMax;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
