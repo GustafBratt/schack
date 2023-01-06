@@ -1,11 +1,13 @@
 package com.gustafbratt.schack.core;
 
-import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.pjas.Bonde;
+import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.pjas.Kung;
 import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
 import org.junit.jupiter.api.Test;
 
+import static com.gustafbratt.schack.core.SpelStatus.PAGAR;
+import static com.gustafbratt.schack.core.SpelStatus.TRE_UPPREPNINGAR;
 import static com.gustafbratt.schack.core.StartBraden.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -165,4 +167,48 @@ public class BradeTest {
         b.print();
     }
 
+    @Test
+    void equalsOchHashcode() {
+        var bradeClass = Brade.class;
+        var falt = bradeClass.getDeclaredFields();
+        assertThat(falt).as("Dags att uppdatera equals() och hashcode()").hasSize(13);
+    }
+
+    @Test
+    //"a draw if the same position occurs three times during the game"
+    void remiEfterTreDrag() throws OgiltigtDragException {
+        Brade b = new Brade(TORN_MOT_KUNG);
+        b.setPjas("h5", 'T');
+        b = b.hittaDrag("h5", "h6").utfor();
+        b = b.hittaDrag("a8", "a7").utfor();
+
+        System.out.println("'start'");
+        b.print(); //A 1
+        b = b.hittaDrag("e2", "d2").utfor(); //Flytt
+        b.print(); //B
+        b = b.hittaDrag("f8", "e8").utfor();
+        b.print(); //C
+
+        b = b.hittaDrag("d2", "e2").utfor(); //Tillbaka
+        b.print(); //D
+        b = b.hittaDrag("e8", "f8").utfor();
+        System.out.println("tillbaka");
+        b.print(); //A 2
+
+        b = b.hittaDrag("e2", "d2").utfor(); //Flytt
+        b.print(); //B
+        b = b.hittaDrag("f8", "e8").utfor();
+        b.print(); //C
+
+        b = b.hittaDrag("d2", "e2").utfor(); //Tillbaka
+        b.print(); //D
+        assertThat(b.getSpelStatus()).isEqualTo(PAGAR);
+        b = b.hittaDrag("e8", "f8").utfor();
+        b.print(); //A 3
+        assertThat(b.getSpelStatus()).isEqualTo(TRE_UPPREPNINGAR);
+
+        b = b.hittaDrag("e2", "d2").utfor(); //Flytt
+        b.print(); //B
+        assertThat(b.getSpelStatus()).isEqualTo(TRE_UPPREPNINGAR);
+    }
 }

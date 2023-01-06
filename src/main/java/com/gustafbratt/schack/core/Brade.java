@@ -2,10 +2,7 @@ package com.gustafbratt.schack.core;
 
 import com.gustafbratt.schack.core.pjas.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
@@ -18,6 +15,7 @@ public class Brade {
     Farg aktuellFarg = VIT;
     private int antalDrag = 0;
     private final ArrayList<Drag> dragHistorik = new ArrayList<>();
+    private final ArrayList<Brade> bradeHistorik = new ArrayList<>();
 
     private boolean vitKungFlyttad = false;
     private boolean svartKungFlyttad = false;
@@ -29,10 +27,15 @@ public class Brade {
 
     public Brade(StartBraden typ) {
         rutor = typ.skapaRutor();
-        if (typ != START && typ != BONDER_DAM_KUNG_TORN && typ != TIME_FOR_ROCKAD) {
+        if (typ != START && typ != BONDER_DAM_KUNG_TORN && typ != TIME_FOR_ROCKAD ) {
             vitKungFlyttad = true;
             svartKungFlyttad = true;
+            tornA1Flyttad = true;
+            tornA8Flyttad = true;
+            tornH1Flyttad = true;
+            tornH8Flyttad = true;
         }
+        bradeHistorik.add(this);
     }
 
     public Brade(Drag drag) {
@@ -45,6 +48,8 @@ public class Brade {
         antalDrag = gamla.antalDrag + 1;
         dragHistorik.addAll(gamla.dragHistorik);
         dragHistorik.add(drag);
+        bradeHistorik.addAll(gamla.bradeHistorik);
+        bradeHistorik.add(this);
         if (drag.getRockadTyp() != null) {
             utforRockad(drag.getRockadTyp());
         } else {
@@ -61,6 +66,14 @@ public class Brade {
         }
         uppdateraRockadPjaser(drag);
         uppdateraEnPassant(drag);
+    }
+
+    //TODO: lägg till... schack matt?
+    public SpelStatus getSpelStatus() {
+        long antalLikadana = bradeHistorik.stream().filter(b -> b.equals(this)).count();
+        if(antalLikadana > 2 )
+            return SpelStatus.TRE_UPPREPNINGAR;
+        return SpelStatus.PAGAR;
     }
 
     public List<Drag> getDraghistorik() {
@@ -180,7 +193,10 @@ public class Brade {
                 if (Character.isLowerCase(rutor[i][j])) {
                     poang -= getVarde(rutor[i][j]) * 5;
                 }
-
+                if(rutor[i][j] == 'B')
+                    poang += 8 - i;
+                if(rutor[i][j] == 'b')
+                    poang -= i + 1;
             }
         }
         poang += antalDragAkutell + hotAktuell;
@@ -313,7 +329,7 @@ public class Brade {
     }
 
     public void print() {
-        System.out.println("Antal drag genomförda: " + antalDrag + " " + dragHistorik);
+        System.out.println(getSpelStatus() + " Antal drag genomförda: " + antalDrag + " " + dragHistorik);
         if (aktuellFarg == VIT) {
             System.out.println("  a b c d e f g h  " + aktuellFarg + "s drag. Poäng: " + poang());
             for (int i = 0; i < 8; i++) {
@@ -353,5 +369,37 @@ public class Brade {
             throw new OgiltigtDragException();
         }
         return drag.get();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Brade brade = (Brade) o;
+
+        if (vitKungFlyttad != brade.vitKungFlyttad) return false;
+        if (svartKungFlyttad != brade.svartKungFlyttad) return false;
+        if (tornA1Flyttad != brade.tornA1Flyttad) return false;
+        if (tornA8Flyttad != brade.tornA8Flyttad) return false;
+        if (tornH1Flyttad != brade.tornH1Flyttad) return false;
+        if (tornH8Flyttad != brade.tornH8Flyttad) return false;
+        if (!Arrays.deepEquals(rutor, brade.rutor)) return false;
+        if (aktuellFarg != brade.aktuellFarg) return false;
+        return enPassantKolumn != null ? enPassantKolumn.equals(brade.enPassantKolumn) : brade.enPassantKolumn == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.deepHashCode(rutor);
+        result = 31 * result + aktuellFarg.hashCode();
+        result = 31 * result + (vitKungFlyttad ? 1 : 0);
+        result = 31 * result + (svartKungFlyttad ? 1 : 0);
+        result = 31 * result + (tornA1Flyttad ? 1 : 0);
+        result = 31 * result + (tornA8Flyttad ? 1 : 0);
+        result = 31 * result + (tornH1Flyttad ? 1 : 0);
+        result = 31 * result + (tornH8Flyttad ? 1 : 0);
+        result = 31 * result + (enPassantKolumn != null ? enPassantKolumn.hashCode() : 0);
+        return result;
     }
 }

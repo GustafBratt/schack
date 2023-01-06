@@ -1,12 +1,14 @@
 package com.gustafbratt.schack.minimax;
 
 import com.gustafbratt.schack.core.Brade;
-import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.Farg;
+import com.gustafbratt.schack.core.SpelStatus;
+import com.gustafbratt.schack.core.pjas.Drag;
 
 import java.util.List;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class MinMax {
 
@@ -57,6 +59,9 @@ public class MinMax {
         }
         if (node.poang() > 3_000 || node.poang() < -3_000) {
             return new DragPoang(null, node.poang());
+        }
+        if (node.getSpelStatus().equals(SpelStatus.TRE_UPPREPNINGAR)) {
+            return new DragPoang(null, 0);
         }
         List<Drag> allaMojligaDrag = node.beraknaMojligaDrag();
         int value;
