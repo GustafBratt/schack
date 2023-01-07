@@ -26,25 +26,25 @@ class MinMaxTest {
         b.print();
         System.out.println(b.beraknaMojligaDrag());
         var mm = new MinMax();
-        var res = mm.minimax(b, 1, true, 0, 0);
+        var res = MinMax.negaMax(b, 1,-99999, 99999, Farg.VIT);
         b.print();
         System.out.println(res.getPoang());
         System.out.println(res.getDrag());
     }
 
     @Test
-    @Disabled //Den här är bara för profilering?
-    public void spel() {
+    //Antal poängberäkningar: 312 565 utan ab
+    //Antal poängberäkningar: 72 055 med ab utan sortering
+    //Antal poängberäkningar: 31 075 med ab med sortering
+    public void heltSpel() {
         Brade brade = new Brade(StartBraden.START);
         int poang = 0;
-        MinMax minMax4 = new MinMax();
-        MinMax minMax2 = new MinMax();
         Drag drag;
         while (poang < 4000 && poang > -4000) {
             if (brade.getAktuellFarg() == VIT) {
-                drag = minMax4.minimax(brade, 3, true, MIN_VALUE, MAX_VALUE).getDrag();
+                drag = MinMax.negaMax(brade, 3, -99999, 99999, VIT).getDrag();
             } else {
-                drag = minMax2.minimax(brade, 2, false, MIN_VALUE, MAX_VALUE).getDrag();
+                drag = MinMax.negaMax(brade, 1,-99999, 99999, SVART).getDrag();
             }
             brade = new Brade(drag);
             System.out.println(drag);
@@ -52,7 +52,8 @@ class MinMaxTest {
             poang = brade.poang();
         }
         System.out.println(brade.getDraghistorik());
-        assertThat(brade.getDraghistorik().toString()).isEqualTo("[Be2-e4, Sg8-f6, Dd1-f3, Sf6-e4, Df3-e4, Bh7-h5, Lf1-b5, Th8-h6, Bd2-d4, Th6-b6, Sb1-a3, Tb6-b5, Sa3-b5, Bf7-f5, De4-f5, Be7-e5, Df5-h5, Bg7-g6, Dh5-g6, Ke8-e7, Lc1-g5, Lf8-h6, Lg5-e7]");
+        assertThat(brade.getDraghistorik().toString()).isEqualTo("[Be2-e3, Be7-e5, Dd1-h5, Dd8-h4, Dh5-h4xD, Bd7-d5, Sb1-c3, Lc8-g4, Dh4-g4xL, Bd5-d4, Dg4-c8, Bd4-c3xS, Dc8-e8xK]");
+        System.out.println("Antal poängberäkningar: " + Brade.getBerakningar());
     }
 
 
@@ -117,4 +118,12 @@ class MinMaxTest {
         assertThat(brade.getDraghistorik().toString()).isEqualTo("[Bh2-h4, Be7-e5, Bh4-h5, Dd8-f6, Th1-h3, Lf8-c5, Bg2-g4, Lc5-f2, Th3-h1, Lf2-e1]");
     }
 
+    @Test
+    //Djup 4: 1 sekund. 9361 drag
+    //Djup 5: 1 sekund. 20 413 drag
+    void profilering() {
+        Brade b = new Brade(StartBraden.START);
+        MinMax.hittaBastaDrag(b, VIT, 4);
+        System.out.println("Antal berakningar: " + Brade.getBerakningar());
+    }
 }

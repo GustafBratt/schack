@@ -1,5 +1,6 @@
 package com.gustafbratt.schack.minimax;
 
+import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.pjas.Drag;
 
 public class DragPoang {
@@ -25,5 +26,10 @@ public class DragPoang {
 
     public void setPoang(int poang) {
         this.poang = poang;
+    }
+
+    public DragPoang negeraPoang() {
+        poang = -poang;
+        return this;
     }
 }

@@ -24,6 +24,7 @@ public class Brade {
     private boolean tornH1Flyttad = false;
     private boolean tornH8Flyttad = false;
     private Character enPassantKolumn;
+    private static long berakningar;
 
     public Brade(StartBraden typ) {
         rutor = typ.skapaRutor();
@@ -176,6 +177,7 @@ public class Brade {
 
     //Vit maximerar
     int beraknaPoang() {
+        berakningar++;
         List<Drag> aktuellMojligaDrag = beraknaMojligaDrag();
         int antalDragAkutell = aktuellMojligaDrag.size();
         long hotAktuell = aktuellMojligaDrag.stream().filter(Drag::tarAnnanPjas).count();
@@ -401,5 +403,9 @@ public class Brade {
         result = 31 * result + (tornH8Flyttad ? 1 : 0);
         result = 31 * result + (enPassantKolumn != null ? enPassantKolumn.hashCode() : 0);
         return result;
+    }
+
+    public static long getBerakningar() {
+        return berakningar;
     }
 }

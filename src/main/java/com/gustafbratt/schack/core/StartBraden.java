@@ -8,6 +8,7 @@ public enum StartBraden {
     TORN_MOT_KUNG,
     TIME_FOR_ROCKAD,
     INGEN_INIT,
+    INGA_BONDER,
     ;
 
     public char[][] skapaRutor() {
@@ -68,6 +69,17 @@ public enum StartBraden {
             rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
             rutor[6] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
             rutor[7] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'};
+            return rutor;
+        }
+        if(this == StartBraden.INGA_BONDER) {
+            rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart
+            rutor[1] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //2
+            rutor[2] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //3
+            rutor[3] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //4
+            rutor[4] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //5
+            rutor[5] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //6
+            rutor[6] = new char[]{'.', '.', '.', '.', '.', '.', '.', '.'}; //7
+            rutor[7] = new char[]{'T', 'S', 'L', 'D', 'K', 'L', 'S', 'T'}; //8  Vit
             return rutor;
         }
         rutor[0] = new char[]{'t', 's', 'l', 'd', 'k', 'l', 's', 't'}; //1 Svart

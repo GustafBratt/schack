@@ -16,7 +16,6 @@ public class IterativeDeepening {
         Runnable task = () -> {
             for (int i = 1; i < 16; i++) {
                 bastaDrag = MinMax.hittaBastaDrag(brade, farg, i);
-                //System.out.println("Klar med djup " + i + ": " + bastaDrag);
             }
         };
         executor.submit(task);
