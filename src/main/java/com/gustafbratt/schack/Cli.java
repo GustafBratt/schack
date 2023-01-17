@@ -5,7 +5,7 @@ import com.gustafbratt.schack.core.Farg;
 import com.gustafbratt.schack.core.StartBraden;
 import com.gustafbratt.schack.core.pjas.Drag;
 import com.gustafbratt.schack.core.pjas.OgiltigtDragException;
-import com.gustafbratt.schack.minimax.IterativeDeepening;
+import com.gustafbratt.schack.sokning.IterativeDeepening;
 
 import java.util.List;
 import java.util.Optional;

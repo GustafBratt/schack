@@ -1,6 +1,5 @@
-package com.gustafbratt.schack.minimax;
+package com.gustafbratt.schack.sokning;
 
-import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.pjas.Drag;
 
 public class DragPoang {

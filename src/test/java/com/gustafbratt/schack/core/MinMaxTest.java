@@ -1,14 +1,13 @@
 package com.gustafbratt.schack.core;
 
 import com.gustafbratt.schack.core.pjas.Drag;
-import com.gustafbratt.schack.minimax.MinMax;
+import com.gustafbratt.schack.sokning.MinMax;
+import com.gustafbratt.schack.sokning.Transpositionstabell;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
-import static java.lang.Integer.MAX_VALUE;
-import static java.lang.Integer.MIN_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MinMaxTest {
@@ -70,11 +69,11 @@ class MinMaxTest {
         while (poang < 4000 && poang > -4000) {
             if (brade.getAktuellFarg() == VIT) {
                 drag = new MinMax().hittaBastaDrag(brade, VIT, 4);
-                //var r = new MinMax().minimax(brade, 4, true, MIN_VALUE, MAX_VALUE);
+                //var r = new MinMax().sokning(brade, 4, true, MIN_VALUE, MAX_VALUE);
                 //drag = r.getDrag();
             } else {
                 drag = new MinMax().hittaBastaDrag(brade, SVART, 3);
-                //var r = new MinMax().minimax(brade, 3, false, MIN_VALUE, MAX_VALUE);
+                //var r = new MinMax().sokning(brade, 3, false, MIN_VALUE, MAX_VALUE);
                 //drag = r.getDrag();
             }
             System.out.println(brade.getAktuellFarg() + " " + drag);
@@ -125,5 +124,6 @@ class MinMaxTest {
         Brade b = new Brade(StartBraden.START);
         MinMax.hittaBastaDrag(b, VIT, 4);
         System.out.println("Antal berakningar: " + Brade.getBerakningar());
+        System.out.println("Storlek tabell: " + Transpositionstabell.getSize());
     }
 }

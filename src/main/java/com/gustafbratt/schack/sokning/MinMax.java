@@ -1,4 +1,4 @@
-package com.gustafbratt.schack.minimax;
+package com.gustafbratt.schack.sokning;
 
 import com.gustafbratt.schack.core.Brade;
 import com.gustafbratt.schack.core.Farg;
@@ -25,6 +25,20 @@ public class MinMax {
         if (Thread.currentThread().isInterrupted()) {
             throw new RuntimeException();
         }
+        int alphaOrig = alpha;
+        var ttEntryOptional = Transpositionstabell.lookup(node);
+        if (ttEntryOptional.isPresent() && ttEntryOptional.get().getDepth() >= depth) {
+            var ttEntry = ttEntryOptional.get();
+            if (ttEntry.getElementTyp().equals(ElementTyp.EXACT))
+                return new DragPoang(null, ttEntry.getValue());
+            if (ttEntry.getElementTyp().equals(ElementTyp.LOWERBOUND))
+                alpha = Math.max(alpha, ttEntry.getValue());
+            if (ttEntry.getElementTyp().equals(ElementTyp.UPPERBOUND))
+                beta = Math.min(beta, ttEntry.getValue());
+            if (alpha >= beta)
+                return new DragPoang(null, ttEntry.getValue());
+        }
+
         if (depth == 0 || node.poang() > 3_000 || node.poang() < -3_000) {
             return new DragPoang(null, node.poang() * farg.getPoangFaktor());
         }
@@ -46,6 +60,15 @@ public class MinMax {
             if (alpha >= beta)
                 break;
         }
+        ElementTyp elementTyp;
+        if (value <= alphaOrig)
+            elementTyp = ElementTyp.UPPERBOUND;
+        else if (value >= beta)
+            elementTyp = ElementTyp.LOWERBOUND;
+        else
+            elementTyp = ElementTyp.EXACT;
+        TabellElement ttEntry = new TabellElement(elementTyp, value, depth);
+        Transpositionstabell.store(node, ttEntry);
         return new DragPoang(bastaDraget, value);
     }
 
