@@ -4,6 +4,7 @@ import com.gustafbratt.schack.core.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Pjas {
     public static final char CONST_BONDE = 'B';

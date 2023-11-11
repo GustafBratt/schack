@@ -6,6 +6,19 @@ import com.gustafbratt.schack.core.UtanforBradetException;
 
 public class Bonde extends Pjas {
 
+    static int[][] varde = new int[8][];
+
+    static {
+        varde[0] = new int[]{20, 20, 20, 20, 20, 20, 20, 20};
+        varde[1] = new int[]{25, 25, 25, 25, 25, 25, 25, 25};
+        varde[2] = new int[]{20, 20, 20, 24, 24, 20, 20, 20};
+        varde[3] = new int[]{18, 18, 18, 20, 20, 18, 18, 18};
+        varde[4] = new int[]{15, 15, 15, 18, 18, 15, 15, 15};
+        varde[5] = new int[]{15, 15, 15, 15, 15, 15, 15, 15};
+        varde[6] = new int[]{10, 10, 10, 10, 10, 10, 10, 10};
+        varde[7] = new int[]{10, 10, 10, 10, 10, 10, 10, 10};
+    }
+
     public Bonde(Brade brade, String position) {
         super(brade, position);
         char pjasKod = brade.charPa(position);
@@ -18,6 +31,10 @@ public class Bonde extends Pjas {
     @Override
     public char getChar() {
         return CONST_BONDE;
+    }
+
+    public static int getVarde(int rad, int kolumn) {
+        return varde[rad][kolumn];
     }
 
     private void beraknaMojligaDrag() {

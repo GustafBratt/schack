@@ -10,7 +10,7 @@ import static com.gustafbratt.schack.core.StartBraden.*;
 
 
 public class Brade {
-    char[][] rutor;// = new char[8][0];
+    char[][] rutor;
     private Optional<Integer> poang = Optional.empty(); //TODO nullable Integer istället?
     Farg aktuellFarg = VIT;
     private int antalDrag = 0;
@@ -28,7 +28,7 @@ public class Brade {
 
     public Brade(StartBraden typ) {
         rutor = typ.skapaRutor();
-        if (typ != START && typ != BONDER_DAM_KUNG_TORN && typ != TIME_FOR_ROCKAD ) {
+        if (typ != START && typ != BONDER_DAM_KUNG_TORN && typ != TIME_FOR_ROCKAD) {
             vitKungFlyttad = true;
             svartKungFlyttad = true;
             tornA1Flyttad = true;
@@ -72,7 +72,7 @@ public class Brade {
     //TODO: lägg till... schack matt?
     public SpelStatus getSpelStatus() {
         long antalLikadana = bradeHistorik.stream().filter(b -> b.equals(this)).count();
-        if(antalLikadana > 2 )
+        if (antalLikadana > 2)
             return SpelStatus.TRE_UPPREPNINGAR;
         return SpelStatus.PAGAR;
     }
@@ -178,41 +178,31 @@ public class Brade {
     //Vit maximerar
     int beraknaPoang() {
         berakningar++;
-        List<Drag> aktuellMojligaDrag = beraknaMojligaDrag();
-        int antalDragAkutell = aktuellMojligaDrag.size();
-        long hotAktuell = aktuellMojligaDrag.stream().filter(Drag::tarAnnanPjas).count();
-
-        List<Drag> andraMojligaDrag = klonaOchFlippa().beraknaMojligaDrag();
-        int antalDragAndra = andraMojligaDrag.size();
-        long hotAndra = andraMojligaDrag.stream().filter(Drag::tarAnnanPjas).count();
-
         int poang = 0;
+        var flippad = klonaOchFlippa();
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (Character.isUpperCase(rutor[i][j])) {
-                    poang += getVarde(rutor[i][j]) * 5;
-                }
-                if (Character.isLowerCase(rutor[i][j])) {
-                    poang -= getVarde(rutor[i][j]) * 5;
-                }
-                if(rutor[i][j] == 'B')
-                    poang += 8 - i;
-                if(rutor[i][j] == 'b')
-                    poang -= i + 1;
+                poang += getVarde(i, j);
+                poang -= flippad.getVarde(i, j);
             }
         }
-        poang += antalDragAkutell + hotAktuell;
-        poang -= antalDragAndra + hotAndra;
-        if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
-            poang = 5_000 - antalDrag;
-        }
-        if (poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
-            poang = -5_000 + antalDrag;
-        }
-        if (aktuellFarg == VIT)
+
+
+        if(poang >5_000)
+
+    { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
+        poang = 5_000 - antalDrag;
+    }
+        if(poang< -5_000)
+
+    { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
+        poang = -5_000 + antalDrag;
+    }
+        if(aktuellFarg ==VIT)
             return poang;
         return -poang;
-    }
+}
 
     public List<Drag> beraknaMojligaDrag() {
         List<Drag> allaDrag = new ArrayList<>();
@@ -240,17 +230,16 @@ public class Brade {
         return Optional.ofNullable(valdPjas);
     }
 
-
-    //TODO hitta bättre värden
-    private int getVarde(char c) {
-        c = Character.toUpperCase(c);
+    private int getVarde(int i, int j) {
+        //c = Character.toUpperCase(c);
+        var c = rutor[i][j];
         return switch (c) {
-            case Pjas.CONST_BONDE -> 1;
+            case Pjas.CONST_BONDE -> Bonde.getVarde(i, j);
             case Pjas.CONST_KUNG -> 10_000;
-            case Pjas.CONST_TORN -> 6;
-            case Pjas.CONST_SPRINGARE -> 5;
-            case Pjas.CONST_LOPARE -> 4;
-            case Pjas.CONST_DAM -> 15;
+            case Pjas.CONST_TORN -> Torn.getVarde(i, j);
+            case Pjas.CONST_SPRINGARE -> Springare.getVarde(i, j);
+            case Pjas.CONST_LOPARE -> Lopare.getVarde(i, j);
+            case Pjas.CONST_DAM -> Dam.getVarde(i, j);
             default -> 0;
         };
     }

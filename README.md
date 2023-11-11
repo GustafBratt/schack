@@ -6,13 +6,15 @@
 - [x] Springare (häst)
 - [x] löpare
 - [x] Rockad - simpel
-- [ ] Remi vid dragupprepning  
+- [x] Remi vid dragupprepning  
 - [ ] Patt
 - [ ] Rockad - kungen får inte stå i schack
 - [x] Enkel promovering - bara dam
-- [ ] Promovering - till olika pjäser  
+- [x] Promovering - till olika pjäser  
 - [x] En passant
 - [ ] Schack (behövs den?)
+- [ ] Sluta söka om score > 3000
+- [ ] Pjäspoäng per position
 
 ### Optimering
 - [x] Alpha-beta prune

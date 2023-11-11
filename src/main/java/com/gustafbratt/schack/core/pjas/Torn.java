@@ -8,7 +8,7 @@ public class Torn extends Pjas {
         super(brade, position);
         char pjasKod = brade.charPa(position);
         if (pjasKod != CONST_TORN) {
-            throw new IllegalStateException("Inte en kung på position " + position + ". Det är en " + pjasKod);
+            throw new IllegalStateException("Inte ett torn på position " + position + ". Det är en " + pjasKod);
         }
         this.beraknaMojligaDrag();
     }
@@ -23,4 +23,22 @@ public class Torn extends Pjas {
     public char getChar() {
         return CONST_TORN;
     }
+
+    static int[][] varde = new int[8][];
+
+    static {
+        varde[0] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[1] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[2] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[3] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[4] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[5] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[6] = new int[]{60, 60, 60, 60, 60, 60, 60, 60};
+        varde[7] = new int[]{59, 60, 60, 60, 60, 60, 60, 59};
+    }
+
+    public static int getVarde(int rad, int kolumn) {
+        return varde[rad][kolumn];
+    }
+
 }

@@ -14,6 +14,11 @@ public class Dam extends Pjas {
         beraknaMojligaDrag();
     }
 
+
+    public static int getVarde(int rad, int kolumn) {
+        return 150;
+    }
+
     private void beraknaMojligaDrag() {
         for(Riktning riktning : Riktning.ALLARIKTNINGAR) {
             skapaLinjeMedDrag(riktning);

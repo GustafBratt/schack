@@ -13,7 +13,7 @@ public class MinMax {
     public final static int INF_NEG = -999999;
 
     public static Drag hittaBastaDrag(Brade brade, Farg farg, int djup) {
-        System.out.println("Antal möjliga drag: " + brade.beraknaMojligaDrag().size());
+        //System.out.println("Antal möjliga drag: " + brade.beraknaMojligaDrag().size());
         var res = negaMax(brade, djup, INF_NEG, INF, farg);
         var value = res.getPoang();
         var bastaDrag = res.getDrag();
