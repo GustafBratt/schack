@@ -16,17 +16,17 @@ public class Drag {
     final DragTyp dragTyp;
 
     public Drag shallowClone() {
-        return new Drag(bradeFran, fran, till, dragTyp);
+        return new Drag(bradeFran, fran, till, dragTyp, rockadTyp);
     }
 
 
     //TODO kolla om den här finns med i listan över giltiga drag?
-    public Drag(Brade bradeFran, String fran, String till, DragTyp dragTyp) {
+    public Drag(Brade bradeFran, String fran, String till, DragTyp dragTyp, RockadTyp rockadTyp) {
         this.fran = fran;
         this.till = till;
         this.bradeFran = bradeFran;
         this.dragTyp = dragTyp;
-        rockadTyp = null;
+        this.rockadTyp = rockadTyp;
         if(dragTyp == DragTyp.ENPASSANT) {
             tagenPjas = 'b';
         } else {

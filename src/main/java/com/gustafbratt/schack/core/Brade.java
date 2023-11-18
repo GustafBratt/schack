@@ -177,10 +177,30 @@ public class Brade {
         return poang.get();
     }
 
+    private boolean kanGoraMinstEttDrag() {
+        for (char i = 'a'; i < 'i'; i++) {
+            for (int j = 1; j < 9; j++) {
+                String pos = "" + (char) i + j;
+                Optional<Pjas> p = getPjas(pos);
+                if (p.isPresent()) {
+                    if (p.get() instanceof Kung) {
+                        if (!isISchack()) {
+                            ((Kung) (p.get())).beraknaRokader();
+                        }
+                    }
+                    if (p.get().getMojligaDrag().stream().anyMatch(d -> !d.utfor().kanAktivTaKung()))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
     //Vit maximerar
     int beraknaPoang() {
         berakningar++;
-        if (this.getMojligaDrag().size() == 0)
+        //if (this.getMojligaDrag().size() == 0)
+        if (!this.kanGoraMinstEttDrag())
             return 0;
         int poang = 0;
         var flippad = klonaOchFlippa();
@@ -423,21 +443,30 @@ public class Brade {
 
     //En rockad kan inte ta kung.
     public boolean kanAktivTaKung() {
-        AtomicReference<String> passivKungPos = new AtomicReference<>("");
-        List<Drag> allaDrag = new ArrayList<>();
+        var passivKungPos = beraknaPassivKungPosition();
         for (char i = 'a'; i < 'i'; i++) {
             for (int j = 1; j < 9; j++) {
-                String pos = "" + (char) i + j;
+                String pos = "" + i + j;
                 Optional<Pjas> p = getPjas(pos);
-                p.ifPresent(pjas -> allaDrag.addAll(pjas.getMojligaDrag()));
-                if (charPa(pos) == 'k')
-                    passivKungPos.set(pos);
+                if (p.isPresent()) {
+                    boolean tarKung = p.get().getMojligaDrag().stream().map(Drag::getTill).anyMatch(po -> po.equals(passivKungPos));
+                    if (tarKung)
+                        return true;
+                }
             }
         }
-        String finalPassivKungPos = passivKungPos.get();
-        return allaDrag.stream()
-                .map(Drag::getTill)
-                .anyMatch(pos -> pos.equals(finalPassivKungPos));
+        return false;
+    }
+
+    private String beraknaPassivKungPosition() {
+        for (char i = 'a'; i < 'i'; i++) {
+            for (int j = 1; j < 9; j++) {
+                String pos = "" + i + j;
+                if (charPa(pos) == 'k')
+                    return pos;
+            }
+        }
+        throw new IllegalStateException("Kan inte hitta någon passiv kung!");
     }
 
     public void rensaCache() {
