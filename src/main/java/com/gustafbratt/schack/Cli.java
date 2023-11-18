@@ -51,7 +51,9 @@ public class Cli {
 
     private Drag promtaOmDrag() {
         String till = inputPrompt("Välj mål");
-        List<Drag> mojligaDrag = brade.beraknaMojligaDrag().stream().filter(d -> d.getTill().equals(till)).collect(Collectors.toList());
+        List<Drag> mojligaDrag = brade.getMojligaDrag()
+                .stream().filter(d -> d.getTill().equals(till))
+                .collect(Collectors.toList());
         if (mojligaDrag.size() == 1) {
             return mojligaDrag.get(0);
         }

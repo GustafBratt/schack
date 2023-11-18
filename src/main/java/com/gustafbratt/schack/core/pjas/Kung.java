@@ -23,6 +23,9 @@ public class Kung extends Pjas {
             } catch (UtanforBradetException ignored) {
             }
         }
+    }
+
+    public void beraknaRokader() {
         //TODO kungen får inte stå i schack; man kan alltså inte undkomma en schack genom att rockera
         //varken kungen eller det torn som används för rockaden får ha flyttats tidigare under partiet
         //inget fält mellan kungen och tornet får vara besatt av en annan pjäs; det får alltså inte stå någon annan pjäs emellan dem, oavsett färg

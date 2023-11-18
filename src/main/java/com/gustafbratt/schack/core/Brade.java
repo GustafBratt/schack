@@ -3,6 +3,8 @@ package com.gustafbratt.schack.core;
 import com.gustafbratt.schack.core.pjas.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
@@ -69,7 +71,7 @@ public class Brade {
         uppdateraEnPassant(drag);
     }
 
-    //TODO: lägg till... schack matt?
+    //TODO: lägg till... schack matt? Och patt?
     public SpelStatus getSpelStatus() {
         long antalLikadana = bradeHistorik.stream().filter(b -> b.equals(this)).count();
         if (antalLikadana > 2)
@@ -178,6 +180,8 @@ public class Brade {
     //Vit maximerar
     int beraknaPoang() {
         berakningar++;
+        if (this.getMojligaDrag().size() == 0)
+            return 0;
         int poang = 0;
         var flippad = klonaOchFlippa();
 
@@ -188,29 +192,44 @@ public class Brade {
             }
         }
 
-
-        if(poang >5_000)
-
-    { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
-        poang = 5_000 - antalDrag;
-    }
-        if(poang< -5_000)
-
-    { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
-        poang = -5_000 + antalDrag;
-    }
-        if(aktuellFarg ==VIT)
+        if (poang > 5_000) { //Vit vill vinna så fort som möjligt, ha så hög poäng som möjligt
+            poang = 5_000 - antalDrag;
+        }
+        if (poang < -5_000) { //Svart vill ha så lite poäng som möjligt. Addera därför antal drag.
+            poang = -5_000 + antalDrag;
+        }
+        if (aktuellFarg == VIT)
             return poang;
         return -poang;
-}
+    }
 
-    public List<Drag> beraknaMojligaDrag() {
+    Optional<List<Drag>> mojligaDrag = Optional.empty();
+
+    public List<Drag> getMojligaDrag() {
+        if (mojligaDrag.isEmpty())
+            mojligaDrag = Optional.of(beraknaAllaMojligaDrag());
+        return mojligaDrag.get();
+    }
+
+    private List<Drag> beraknaAllaMojligaDrag() {
         List<Drag> allaDrag = new ArrayList<>();
         for (char i = 'a'; i < 'i'; i++) {
             for (int j = 1; j < 9; j++) {
-                String pos = "" + i + j;
+                String pos = "" + (char) i + j;
                 Optional<Pjas> p = getPjas(pos);
-                p.ifPresent(pjas -> allaDrag.addAll(pjas.getMojligaDrag()));
+                if (p.isPresent()) {
+                    if (p.get() instanceof Kung) {
+                        if (!isISchack()) {
+                            ((Kung) (p.get())).beraknaRokader();
+                        }
+                    }
+                    allaDrag.addAll(p.get()
+                            .getMojligaDrag()
+                            .stream()
+                            .filter(d -> !d.utfor().kanAktivTaKung())
+                            .collect(Collectors.toList())
+                    );
+                }
             }
         }
         return allaDrag;
@@ -231,7 +250,6 @@ public class Brade {
     }
 
     private int getVarde(int i, int j) {
-        //c = Character.toUpperCase(c);
         var c = rutor[i][j];
         return switch (c) {
             case Pjas.CONST_BONDE -> Bonde.getVarde(i, j);
@@ -310,9 +328,9 @@ public class Brade {
 
 
     public Brade klonaOchFlippa() {
-        Brade b2 = new Brade(TOMT);
-        b2.klonaOchFlippa(this);
-        return b2;
+        Brade flippadKlon = new Brade(TOMT);
+        flippadKlon.klonaOchFlippa(this);
+        return flippadKlon;
     }
 
     public Character getEnPassantKolumn() {
@@ -396,5 +414,33 @@ public class Brade {
 
     public static long getBerakningar() {
         return berakningar;
+    }
+
+    public boolean isISchack() {
+        var flippad = klonaOchFlippa();
+        return flippad.kanAktivTaKung();
+    }
+
+    //En rockad kan inte ta kung.
+    public boolean kanAktivTaKung() {
+        AtomicReference<String> passivKungPos = new AtomicReference<>("");
+        List<Drag> allaDrag = new ArrayList<>();
+        for (char i = 'a'; i < 'i'; i++) {
+            for (int j = 1; j < 9; j++) {
+                String pos = "" + (char) i + j;
+                Optional<Pjas> p = getPjas(pos);
+                p.ifPresent(pjas -> allaDrag.addAll(pjas.getMojligaDrag()));
+                if (charPa(pos) == 'k')
+                    passivKungPos.set(pos);
+            }
+        }
+        String finalPassivKungPos = passivKungPos.get();
+        return allaDrag.stream()
+                .map(Drag::getTill)
+                .anyMatch(pos -> pos.equals(finalPassivKungPos));
+    }
+
+    public void rensaCache() {
+        mojligaDrag = Optional.empty();
     }
 }

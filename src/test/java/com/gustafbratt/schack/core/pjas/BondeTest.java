@@ -62,7 +62,7 @@ class BondeTest {
         brade.setPjas("e8", 'B');
         brade.setPjas("h8", 'B');
         brade.print();
-        assertThat(brade.beraknaMojligaDrag()).isEmpty();
+        assertThat(brade.getMojligaDrag()).isEmpty();
     }
 
     @Test
@@ -71,13 +71,13 @@ class BondeTest {
         brade.setPjas("c2", 'B');
         brade.setPjas("d4", 'b');
         brade.print();
-        var allaDrag = brade.beraknaMojligaDrag();
+        var allaDrag = brade.getMojligaDrag();
         System.out.println(allaDrag);
         Drag forstaBonden = brade.hittaDrag("c2", "c4");
         brade = forstaBonden.utfor();
         brade.print();
         assertThat(brade.getEnPassantKolumn()).isEqualTo('c');
-        allaDrag = brade.beraknaMojligaDrag();
+        allaDrag = brade.getMojligaDrag();
         System.out.println(allaDrag);
         Drag andraBonden = brade.hittaDrag("d4", "c3");
         brade = andraBonden.utfor();
@@ -95,7 +95,7 @@ class BondeTest {
         brade.print();
         brade = brade.hittaDrag("c7", "c5").utfor();
         brade.print();
-        List<Drag> mojligaDrag = brade.beraknaMojligaDrag();
+        List<Drag> mojligaDrag = brade.getMojligaDrag();
         System.out.println(mojligaDrag);
         brade = brade.hittaDrag("d5", "c6").utfor();
         brade.print();
@@ -109,7 +109,7 @@ class BondeTest {
         brade.setPjas("c2", 'B');
         brade.setPjas("d4", 'b');
         brade.print();
-        var allaDrag = brade.beraknaMojligaDrag();
+        var allaDrag = brade.getMojligaDrag();
         System.out.println(allaDrag);
         Drag forstaBonden = brade.hittaDrag("c2", "c3");
         brade = forstaBonden.utfor();

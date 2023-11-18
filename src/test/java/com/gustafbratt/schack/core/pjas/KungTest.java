@@ -109,7 +109,7 @@ class KungTest {
         b = b.hittaDrag( "h8", "h7").utfor();
         b = b.hittaDrag( "f2", "f3").utfor();
         b.print();
-        var allaDrag = b.beraknaMojligaDrag();
+        var allaDrag = b.getMojligaDrag();
         assertThat(allaDrag.stream().map(Drag::toString)).doesNotContain("Ke8-g8R");
     }
 
@@ -125,7 +125,7 @@ class KungTest {
         b = b.hittaDrag( "d2", "d3").utfor(); //Vit
         b = b.hittaDrag( "f8", "d6").utfor(); //Svart
         b = b.hittaDrag( "e2", "e3").utfor(); //Vit
-        assertThat(b.beraknaMojligaDrag().stream().map(Drag::toString)).contains("Ke8-g8R");
+        assertThat(b.getMojligaDrag().stream().map(Drag::toString)).contains("Ke8-g8R");
         b = b.hittaDrag( "e8", "g8").utfor();
         assertThat(b.charPa("f8")).isEqualTo('t');
     }

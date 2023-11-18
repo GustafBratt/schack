@@ -32,7 +32,7 @@ public class MinMax {
             return new DragPoang(null, 0);
         }
         int value = -99999;
-        List<Drag> allaMojligaDrag = node.beraknaMojligaDrag();
+        List<Drag> allaMojligaDrag = node.getMojligaDrag();
         allaMojligaDrag.forEach(Drag::utfor);
         allaMojligaDrag.sort((o1, o2) -> (o2.getBradeTill().poang() - o1.getBradeTill().poang()) * farg.getPoangFaktor());
         Drag bastaDraget = null;
@@ -46,6 +46,7 @@ public class MinMax {
             if (alpha >= beta)
                 break;
         }
+        node.rensaCache();
         return new DragPoang(bastaDraget, value);
     }
 

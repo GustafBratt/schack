@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static com.gustafbratt.schack.core.Farg.SVART;
 import static com.gustafbratt.schack.core.Farg.VIT;
-import static java.lang.Integer.MAX_VALUE;
-import static java.lang.Integer.MIN_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MinMaxTest {
@@ -24,7 +22,7 @@ class MinMaxTest {
         b.rutor[6] = new char[]{'.', '.', '.', '.', 'K', '.', '.', '.'};
         b.rutor[7] = new char[]{'.', '.', '.', 'T', '.', '.', '.', '.'};
         b.print();
-        System.out.println(b.beraknaMojligaDrag());
+        System.out.println(b.getMojligaDrag());
         var mm = new MinMax();
         var res = MinMax.negaMax(b, 1,-99999, 99999, Farg.VIT);
         b.print();

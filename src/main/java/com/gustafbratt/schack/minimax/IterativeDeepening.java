@@ -12,6 +12,7 @@ public class IterativeDeepening {
 
     static Drag bastaDrag = null;
     public static Drag hittaBastaDrag(Brade brade, Farg farg, int timeoutSekunder) {
+        long berakningarFore = Brade.getBerakningar();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Runnable task = () -> {
             for (int i = 1; i < 16; i++) {
@@ -27,7 +28,10 @@ public class IterativeDeepening {
         }
         System.out.println("Färdig med sleep");
         executor.shutdownNow();
-        return bastaDrag;
+        long berakningarEfter = Brade.getBerakningar();
+        float bps = (float)(berakningarEfter - berakningarFore) / timeoutSekunder;
+        System.out.println("Berakningar per sekund: " + bps);
+        return bastaDrag.shallowClone();
     }
 
     public static Drag hittaBastaDragParalell(Brade brade, Farg farg, int timeoutSekunder) {

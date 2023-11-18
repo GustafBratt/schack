@@ -2,19 +2,26 @@ package com.gustafbratt.schack.core.pjas;
 
 import com.gustafbratt.schack.core.Brade;
 
+import java.util.Optional;
+
 public class Drag {
     final char pjas;
     final String fran;
     final String till;
     final private Brade bradeFran;
-    private Brade bradeTill; //Sätts vid utför()
+    private Optional<Brade> bradeTill = Optional.empty(); //Sätts vid utför()
     final RockadTyp rockadTyp;
     private final char tagenPjas;
     private final boolean promovering;
     final DragTyp dragTyp;
 
+    public Drag shallowClone() {
+        return new Drag(bradeFran, fran, till, dragTyp);
+    }
+
+
     //TODO kolla om den här finns med i listan över giltiga drag?
-    Drag(Brade bradeFran, String fran, String till, DragTyp dragTyp) {
+    public Drag(Brade bradeFran, String fran, String till, DragTyp dragTyp) {
         this.fran = fran;
         this.till = till;
         this.bradeFran = bradeFran;
@@ -57,7 +64,9 @@ public class Drag {
     }
 
     public Brade utfor() {
-        return new Brade(this);
+        if (bradeTill.isEmpty())
+            bradeTill = Optional.of(new Brade(this));
+        return bradeTill.get();
     }
 
     public String getTill() {
@@ -90,11 +99,11 @@ public class Drag {
     }
 
     public Brade getBradeTill() {
-        return bradeTill;
+        return utfor();
     }
 
     public void setBradeTill(Brade bradeTill) {
-        this.bradeTill = bradeTill;
+        this.bradeTill = Optional.of(bradeTill);
     }
 
     @Override
